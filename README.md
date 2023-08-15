@@ -3,6 +3,11 @@
 ## Setup
 Clone the SBIBM fork https://github.com/henhagg/sbibm into the parent directory of the semple repository to get local access to the observed data sets and reference samples of the Two Moons and SLCP models.
 
+Run the following command in R to get the correct version of xLLiM: 
+```commandline
+devtools::install_github("epertham/xLLiM", ref = "devel")
+```
+
 ## Running SeMPLE
 To run SeMPLE with with a specific model/task run the corresponding "model_name.R" script, e.g. "two_moons.R". The algorithm outputs are saved into the results directory.
 
