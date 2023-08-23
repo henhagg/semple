@@ -69,10 +69,11 @@ def run_sbibm_run(algorithm, task_name, run_indices_list, num_simulations, num_r
 
 if __name__ == '__main__':
     print("run_sbibm")
-    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(6,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/4rounds", simulation_batch_size=1)
+    run_sbibm_run(algorithm="snpe", task_name = "twisted", run_indices_list=range(1,2), num_simulations = 100, num_rounds = 1, num_samples = 100, subfolder_save="/test", simulation_batch_size=1)
+    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(1,2), num_simulations = 100, num_rounds = 1, num_samples = 100, subfolder_save="/test", simulation_batch_size=1)
+
+    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(6,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/test", simulation_batch_size=1)
     # run_sbibm_run(algorithm="snpe", task_name = "ornstein_uhlenbeck", run_indices_list=range(6,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/40k_total", simulation_batch_size=1)
-    run_sbibm_obs(algorithm="snle", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
-    run_sbibm_obs(algorithm="snpe", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
+    # run_sbibm_obs(algorithm="snle", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
+    # run_sbibm_obs(algorithm="snpe", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
 
-
-    

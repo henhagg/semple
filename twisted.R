@@ -5,7 +5,7 @@ library(mvtnorm)
 library(rjson)
  
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('gaumixfit_sbibm_K.R')
 source('models/twisted/twisted_model.R')
 
 
@@ -32,11 +32,11 @@ subfolder = "" # e.g test/
 
 
 tic()
-observation_indices = 1:1
-for (num_observation in observation_indices){
-  set.seed(num_observation)
+run_indices = 7
+for (run_index in run_indices){
+  set.seed(run_index)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "obs", num_observation, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "run", run_index, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
   
   observedData = c(10,rep(0,19))
