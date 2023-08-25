@@ -266,7 +266,7 @@ def plot_multiple_density_scatter(file_path_list, subfig_titles, fig_size, xlim=
         fig.savefig(save_path)
 
 #################################### ACCEPTANCE RATE #############################################
-def plot_jass_acceptance_rate(input_dir):    
+def plot_semple_acceptance_rate(input_dir):    
     with open(f"{input_dir}/settings.json", "r") as openfile:
         settings_dict = json.load(openfile)
 
@@ -286,7 +286,7 @@ def plot_jass_acceptance_rate(input_dir):
     plt.ylabel("Acceptance rate", fontsize=15)
     plt.show()
 
-def plot_median_jass_acceptance_rate(input_dir, obs_or_run, num_obs_or_runs_total, save_path=None, show_fig=True):
+def plot_median_semple_acceptance_rate(input_dir, obs_or_run, num_obs_or_runs_total, save_path=None, show_fig=True):
     with open(f"{input_dir}/{obs_or_run}1/settings.json", "r") as openfile:
         settings_dict = json.load(openfile)
     num_iters = settings_dict["num_iters"]
@@ -309,7 +309,7 @@ def plot_median_jass_acceptance_rate(input_dir, obs_or_run, num_obs_or_runs_tota
     if show_fig:
         plt.show()
     
-def plot_multiple_median_jass_acceptance_rate(input_dir_list, legend_list, num_obs_total, save_path=None, show_fig=True):
+def plot_multiple_median_semple_acceptance_rate(input_dir_list, legend_list, num_obs_total, save_path=None, show_fig=True):
     df = pd.DataFrame(columns=["iteration", "accrate", "Settings"])
     for idx, input_dir in enumerate(input_dir_list):
         with open(f"{input_dir}/obs1/settings.json", "r") as openfile:
@@ -390,116 +390,119 @@ if __name__ == '__main__':
     print("plot_results")
 
     #################################### TWO MOONS ##########################################################
-    # plot_pairs(file_path="results/two_moons/jass/K80/obs1/post_sample_iter4.csv")
-    # plot_kde(file_path="results/two_moons/jass/final/obs1/post_sample_iter4.csv", parameter_name_list=[r"$\theta_1$", r"$\theta_2$"])
+    # plot_pairs(file_path="results/two_moons/semple/K80/obs1/post_sample_iter4.csv")
+    # plot_kde(file_path="results/two_moons/semple/final/obs1/post_sample_iter4.csv", parameter_name_list=[r"$\theta_1$", r"$\theta_2$"])
     # plot_scatter(file_path_list=[f"../sbibm/sbibm/tasks/two_moons/files/num_observation_1/reference_posterior_samples.csv.bz2"], fig_size=(6,6), parameter_name_list=[r"$\theta_1$", r"$\theta_2$"],
     #              save_path="figures/two_moons/posterior_example.pdf")
-    plot_density_scatter(file_path=f"../sbibm/sbibm/tasks/two_moons/files/num_observation_1/reference_posterior_samples.csv.bz2", parameter_name_list=[r"$\theta_1$", r"$\theta_2$"],
-                            save_path="figures/two_moons/posterior_example_density.pdf", fig_size=(5,5), show_density_bar=False)
+    # plot_density_scatter(file_path=f"../sbibm/sbibm/tasks/two_moons/files/num_observation_1/reference_posterior_samples.csv.bz2", parameter_name_list=[r"$\theta_1$", r"$\theta_2$"],
+    #                         save_path="figures/two_moons/posterior_example_density.pdf", fig_size=(5,5), show_density_bar=False)
 
     # plot_multiple_algorithm_kde(file_path_list=[f"results/two_moons/snle/obs1/post_sample_iter4.csv", f"results/two_moons/snpe/obs1/post_sample_iter4.csv", 
-    #     f"results/two_moons/jass/final/obs1/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/two_moons/files/num_observation_1/reference_posterior_samples.csv.bz2"],
-    #     legend_list=["SNL", "SNPE-C", "JASS", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"])
+    #     f"results/two_moons/semple/final/obs1/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/two_moons/files/num_observation_1/reference_posterior_samples.csv.bz2"],
+    #     legend_list=["SNL", "SNPE-C", "semple", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"])
 
     # for num_observation in range(1,11):
     #     plot_multiple_pairs(file_path_list=[f"results/two_moons/snle/obs{num_observation}/post_sample_iter4.csv", f"results/two_moons/snpe/obs{num_observation}/post_sample_iter4.csv", 
-    #         f"results/two_moons/jass/final/obs{num_observation}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/two_moons/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
-    #         legend_list=["SNL", "SNPE-C", "JASS", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"], fig_height=3, fig_show=False, thin_interval=1,
+    #         f"results/two_moons/semple/final/obs{num_observation}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/two_moons/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
+    #         legend_list=["SNL", "SNPE-C", "semple", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"], fig_height=3, fig_show=False, thin_interval=1,
     #         save_path=f"figures/two_moons/pairplot/observation{num_observation}.png")
 
     # for num_observation in range(1,11):
-    #     plot_multiple_density_scatter(file_path_list=[f"results/two_moons/jass/final/obs{num_observation}/post_sample_iter4.csv", f"results/two_moons/snpe/obs{num_observation}/post_sample_iter4.csv",
+    #     plot_multiple_density_scatter(file_path_list=[f"results/two_moons/semple/final/obs{num_observation}/post_sample_iter4.csv", f"results/two_moons/snpe/obs{num_observation}/post_sample_iter4.csv",
     #         f"results/two_moons/snle/obs{num_observation}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/two_moons/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
-    #         subfig_titles=["JASS", "SNPE-C", "SNL", "Reference"], fig_size=(20,5), xlim=(-1.1,1.1), ylim=(-1.1,1.1), save_path=f"figures/two_moons/density_scatter/observation{num_observation}.pdf", show_fig=False)
+    #         subfig_titles=["semple", "SNPE-C", "SNL", "Reference"], fig_size=(20,5), xlim=(-1.1,1.1), ylim=(-1.1,1.1), save_path=f"figures/two_moons/density_scatter/observation{num_observation}.pdf", show_fig=False)
 
-    # plot_metric_vs_time(input_dir="results/two_moons/jass/K80/obs1", metric_name="c2st")
-    # plot_metric_vs_sims(input_dir="results/two_moons/jass/obs2", metric_name="c2st")
+    # plot_metric_vs_time(input_dir="results/two_moons/semple/K80/obs1", metric_name="c2st")
+    # plot_metric_vs_sims(input_dir="results/two_moons/semple/obs2", metric_name="c2st")
 
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/two_moons/jass/final", "results/two_moons/snpe", "results/two_moons/snle"], 
+    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/final", "results/two_moons/snpe", "results/two_moons/snle"], 
     #         metric_name=metric_name, num_obs_total=10, save_path=f"figures/two_moons/algorithm_{metric_name}_vs_sims.pdf")
 
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/two_moons/jass/final", "results/two_moons/jass/MHpost", "results/two_moons/jass/full_cov"],
+    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/final", "results/two_moons/semple/MHpost", "results/two_moons/semple/full_cov"],
     #         legend_list=["Surrogate likelihood", "Surrogate posterior", "Full covariance matrix"], metric_name=metric_name, num_obs_total=10, save_path=f"figures/two_moons/settings_{metric_name}_vs_sims.pdf")
     
-    # plot_jass_acceptance_rate(input_dir="results/two_moons/jass/final/obs1")
-    # plot_median_jass_acceptance_rate(input_dir="results/two_moons/jass/final", num_obs_total=10, save_path="figures/two_moons/jass_median_accrate.pdf")
-    # plot_multiple_median_jass_acceptance_rate(input_dir_list=["results/two_moons/jass/final/", "results/two_moons/jass/MHpost"], 
-    #     legend_list=["Surrogate likelihood", "Surrogate posterior"], num_obs_total=10, save_path="figures/two_moons/jass_median_accrate_lik_post.pdf")
+    # plot_semple_acceptance_rate(input_dir="results/two_moons/semple/final/obs1")
+    # plot_median_semple_acceptance_rate(input_dir="results/two_moons/semple/final", num_obs_total=10, save_path="figures/two_moons/semple_median_accrate.pdf")
+    # plot_multiple_median_semple_acceptance_rate(input_dir_list=["results/two_moons/semple/final/", "results/two_moons/semple/MHpost"], 
+    #     legend_list=["Surrogate likelihood", "Surrogate posterior"], num_obs_total=10, save_path="figures/two_moons/semple_median_accrate_lik_post.pdf")
 
-    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/two_moons/jass/final", "results/two_moons/snpe", "results/two_moons/snle"],
-    #                                                     legend_list=["JASS", "SNPE", "SNLE"], obs_or_run="obs", num_obs_or_run_total=10, save_path="figures/two_moons/time_vs_iter.pdf")
+    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/two_moons/semple/final", "results/two_moons/snpe", "results/two_moons/snle"],
+    #                                                     legend_list=["semple", "SNPE", "SNLE"], obs_or_run="obs", num_obs_or_run_total=10, save_path="figures/two_moons/time_vs_iter.pdf")
 
     ##################################################### HYPERBOLOID ############################################
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/hyperboloid/jass/10k", "results/hyperboloid/snpe/4rounds", "results/hyperboloid/snle/4rounds"], 
+    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/hyperboloid/semple/10k", "results/hyperboloid/snpe/4rounds", "results/hyperboloid/snle/4rounds"], 
     #         metric_name=metric_name, obs_or_run="run", num_obs_or_run_total=5, save_path=f"figures/hyperboloid/algorithm_{metric_name}_vs_sims.pdf")
 
-    # plot_median_jass_acceptance_rate(input_dir="results/hyperboloid/jass/final", obs_or_run="run", num_obs_or_runs_total=5, show_fig=True, save_path="figures/hyperboloid/jass_accrate.pdf")
+    # plot_median_semple_acceptance_rate(input_dir="results/hyperboloid/semple/final", obs_or_run="run", num_obs_or_runs_total=5, show_fig=True, save_path="figures/hyperboloid/semple_accrate.pdf")
 
     # for num_run in range(1,6):
-    #     plot_multiple_density_scatter(file_path_list=[f"results/hyperboloid/jass/10k/run{num_run}/post_sample_iter4.csv", f"results/hyperboloid/snpe/4rounds/run{num_run}/post_sample_iter4.csv",
+    #     plot_multiple_density_scatter(file_path_list=[f"results/hyperboloid/semple/10k/run{num_run}/post_sample_iter4.csv", f"results/hyperboloid/snpe/4rounds/run{num_run}/post_sample_iter4.csv",
     #         f"results/hyperboloid/snle/4rounds/run{num_run}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/hyperboloid/files/num_observation_1/reference_posterior_samples.csv.bz2"],
-    #         subfig_titles=["JASS", "SNPE-C", "SNL", "Reference"], fig_size=(20,5), xlim=(-2,2), ylim=(-2,2), save_path=f"figures/hyperboloid/density_scatter/run{num_run}.pdf", show_fig=True)
+    #         subfig_titles=["semple", "SNPE-C", "SNL", "Reference"], fig_size=(20,5), xlim=(-2,2), ylim=(-2,2), save_path=f"figures/hyperboloid/density_scatter/run{num_run}.pdf", show_fig=True)
 
     # for num_run in range(1,6):
     #     plot_multiple_pairs(file_path_list=[f"results/hyperboloid/snle/4rounds/run{num_run}/post_sample_iter4.csv", f"results/hyperboloid/snpe/4rounds/run{num_run}/post_sample_iter4.csv", 
-    #         f"results/hyperboloid/jass/10k/run{num_run}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/hyperboloid/files/num_observation_1/reference_posterior_samples.csv.bz2"],
-    #         legend_list=["SNL", "SNPE-C", "JASS", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"], fig_height=3, thin_interval=10, fig_show=True,
+    #         f"results/hyperboloid/semple/10k/run{num_run}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/hyperboloid/files/num_observation_1/reference_posterior_samples.csv.bz2"],
+    #         legend_list=["SNL", "SNPE-C", "semple", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$"], fig_height=3, thin_interval=10, fig_show=True,
     #         save_path=f"figures/hyperboloid/pairplot/run{num_run}_thin10.png")
 
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/hyperboloid/jass/final", "results/hyperboloid/jass/10k"],
+    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/hyperboloid/semple/final", "results/hyperboloid/semple/10k"],
     #         legend_list=["20k prior", "10k prior"], metric_name=metric_name, obs_or_run="run", num_obs_or_run_total=10)#, save_path=f"figures/two_moons/settings_{metric_name}_vs_sims.pdf")
 
-    # plot_median_time_vs_iteration(input_dir="results/hyperboloid/jass/10k", obs_or_run="run", num_obs_or_run_total=5)
-    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/hyperboloid/jass/10k", "results/hyperboloid/snpe/4rounds", "results/hyperboloid/snle/4rounds"],
-    #                                                     legend_list=["JASS", "SNPE", "SNLE"], obs_or_run="run", num_obs_or_run_total=5, save_path="figures/hyperboloid/time_vs_iter.pdf")
+    # plot_median_time_vs_iteration(input_dir="results/hyperboloid/semple/10k", obs_or_run="run", num_obs_or_run_total=5)
+    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/hyperboloid/semple/10k", "results/hyperboloid/snpe/4rounds", "results/hyperboloid/snle/4rounds"],
+    #                                                     legend_list=["semple", "SNPE", "SNLE"], obs_or_run="run", num_obs_or_run_total=5, save_path="figures/hyperboloid/time_vs_iter.pdf")
 
     ################################################### ORNSTEIN-UHLENBECK ########################################
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/ornstein_uhlenbeck/jass/10k_prior", "results/ornstein_uhlenbeck/snpe/40k_total", "results/ornstein_uhlenbeck/snle/40k_total"], 
+    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/ornstein_uhlenbeck/semple/10k_prior", "results/ornstein_uhlenbeck/snpe/40k_total", "results/ornstein_uhlenbeck/snle/40k_total"], 
     #         metric_name=metric_name, obs_or_run="run", num_obs_or_run_total=10, save_path=f"figures/ornstein_uhlenbeck/algorithm_{metric_name}_vs_sims.pdf")
         
-    # plot_median_jass_acceptance_rate(input_dir="results/ornstein_uhlenbeck/jass/10k_prior", obs_or_run="run", num_obs_or_runs_total=5, show_fig=True, save_path="figures/ornstein_uhlenbeck/jass_median_accrate.pdf")
+    # plot_median_semple_acceptance_rate(input_dir="results/ornstein_uhlenbeck/semple/10k_prior", obs_or_run="run", num_obs_or_runs_total=5, show_fig=True, save_path="figures/ornstein_uhlenbeck/semple_median_accrate.pdf")
 
     # for num_run in range(1,6):
     #     plot_multiple_pairs(file_path_list=[f"results/ornstein_uhlenbeck/snle/40k_total/run{num_run}/post_sample_iter4.csv", f"results/ornstein_uhlenbeck/snpe/40k_total/run{num_run}/post_sample_iter4.csv", 
-    #         f"results/ornstein_uhlenbeck/jass/10k_prior/run{num_run}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/ornstein_uhlenbeck/files/num_observation_1/reference_posterior_samples.csv.bz2"],
-    #         legend_list=["SNL", "SNPE-C", "JASS", "Reference"], parameter_name_list=[r"$\alpha$", r"$\beta$", r"$\sigma$"], fig_height=3, fig_show=True, thin_interval=10,
+    #         f"results/ornstein_uhlenbeck/semple/10k_prior/run{num_run}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/ornstein_uhlenbeck/files/num_observation_1/reference_posterior_samples.csv.bz2"],
+    #         legend_list=["SNL", "SNPE-C", "semple", "Reference"], parameter_name_list=[r"$\alpha$", r"$\beta$", r"$\sigma$"], fig_height=3, fig_show=True, thin_interval=10,
     #         save_path=f"figures/ornstein_uhlenbeck/pairplot/run{num_run}_thin10.png")
 
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/ornstein_uhlenbeck/jass/10k_prior", "results/ornstein_uhlenbeck/jass/final", "results/ornstein_uhlenbeck/jass/20k_prior_K20"],
+    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/ornstein_uhlenbeck/semple/10k_prior", "results/ornstein_uhlenbeck/semple/final", "results/ornstein_uhlenbeck/semple/20k_prior_K20"],
     #         legend_list=["10k prior", "final", "20k prior"], metric_name=metric_name, obs_or_run="run", num_obs_or_run_total=3)#, save_path=f"figures/two_moons/settings_{metric_name}_vs_sims.pdf")
 
-    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/ornstein_uhlenbeck/jass/10k_prior", "results/ornstein_uhlenbeck/snpe/40k_total", "results/ornstein_uhlenbeck/snle/40k_total"],
-    #                                                  legend_list=["JASS", "SNPE-C", "SNL"], obs_or_run="run", num_obs_or_run_total=5, save_path="figures/ornstein_uhlenbeck/time_vs_iter.pdf")
+    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/ornstein_uhlenbeck/semple/10k_prior", "results/ornstein_uhlenbeck/snpe/40k_total", "results/ornstein_uhlenbeck/snle/40k_total"],
+    #                                                  legend_list=["semple", "SNPE-C", "SNL"], obs_or_run="run", num_obs_or_run_total=5, save_path="figures/ornstein_uhlenbeck/time_vs_iter.pdf")
 
     # TEST
-    # plot_metric_vs_time(input_dir="results/ornstein_uhlenbeck/jass/final/run1", metric_name="c2st")
-    # plot_aggregated_metric_vs_time(input_dir="results/ornstein_uhlenbeck/jass/final", obs_or_run="run", num_obs_or_run_total=10, metric_name="c2st")
-    # plot_multiple_algorithm_metric_vs_time(input_dir_list=["results/ornstein_uhlenbeck/jass/10k_prior/run2", "results/ornstein_uhlenbeck/snpe/40k_total/run2", "results/ornstein_uhlenbeck/snle/40k_total/run2"], metric_name="c2st")
-    # plot_median_time_vs_iteration(input_dir="results/ornstein_uhlenbeck/jass/10k_prior", metric_name="c2st", obs_or_run="run", num_obs_or_run_total=3)
+    # plot_metric_vs_time(input_dir="results/ornstein_uhlenbeck/semple/final/run1", metric_name="c2st")
+    # plot_aggregated_metric_vs_time(input_dir="results/ornstein_uhlenbeck/semple/final", obs_or_run="run", num_obs_or_run_total=10, metric_name="c2st")
+    # plot_multiple_algorithm_metric_vs_time(input_dir_list=["results/ornstein_uhlenbeck/semple/10k_prior/run2", "results/ornstein_uhlenbeck/snpe/40k_total/run2", "results/ornstein_uhlenbeck/snle/40k_total/run2"], metric_name="c2st")
+    # plot_median_time_vs_iteration(input_dir="results/ornstein_uhlenbeck/semple/10k_prior", metric_name="c2st", obs_or_run="run", num_obs_or_run_total=3)
 
     ################################################## SLCP #######################################################
     # for metric_name in ["c2st", "emdp2", "mmd"]:
-    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/slcp/jass/80k", "results/slcp/snpe/4rounds", "results/slcp/snle/4rounds"], 
+    #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/slcp/semple/80k", "results/slcp/snpe/4rounds", "results/slcp/snle/4rounds"], 
     #         metric_name=metric_name, obs_or_run="obs", num_obs_or_run_total=3, save_path=f"figures/slcp/algorithm_{metric_name}_vs_sims.pdf")
         
-    # plot_median_jass_acceptance_rate(input_dir="results/slcp/jass/80k", obs_or_run="obs", num_obs_or_runs_total=3, show_fig=True, save_path="figures/slcp/jass_median_accrate.pdf")
+    # plot_median_semple_acceptance_rate(input_dir="results/slcp/semple/80k", obs_or_run="obs", num_obs_or_runs_total=3, show_fig=True, save_path="figures/slcp/semple_median_accrate.pdf")
 
     # for num_observation in range(1,2):
-    #     plot_multiple_pairs(file_path_list=[f"results/slcp/jass/80k/obs{num_observation}/post_sample_iter4.csv", f"results/slcp/snpe/4rounds/obs{num_observation}/post_sample_iter4.csv",
+    #     plot_multiple_pairs(file_path_list=[f"results/slcp/semple/80k/obs{num_observation}/post_sample_iter4.csv", f"results/slcp/snpe/4rounds/obs{num_observation}/post_sample_iter4.csv",
     #         f"results/slcp/snle/4rounds/obs{num_observation}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/slcp/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
-    #         legend_list=["JASS", "SNPE-C", "SNL", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$", r"$\theta_3$", r"$\theta_4$", r"$\theta_5$"], fig_height=2,
+    #         legend_list=["semple", "SNPE-C", "SNL", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$", r"$\theta_3$", r"$\theta_4$", r"$\theta_5$"], fig_height=2,
     #         fig_show=True, thin_interval=10, save_path=f"figures/slcp/pairplot/obs{num_observation}_thin10.png")
 
-    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/slcp/jass/80k", "results/slcp/snpe/4rounds", "results/slcp/snle/4rounds"],
-    #                                                     legend_list=["JASS", "SNPE-C", "SNL"], obs_or_run="obs", num_obs_or_run_total=3, save_path="figures/slcp/time_vs_iter.pdf")
+    # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/slcp/semple/80k", "results/slcp/snpe/4rounds", "results/slcp/snle/4rounds"],
+    #                                                     legend_list=["semple", "SNPE-C", "SNL"], obs_or_run="obs", num_obs_or_run_total=3, save_path="figures/slcp/time_vs_iter.pdf")
 
     # for num_observation in range(1,2):
-    #     plot_multiple_algorithm_kde(file_path_list=[f"results/slcp/jass/80k/obs{num_observation}/post_sample_iter4.csv", f"results/slcp/snpe/4rounds/obs{num_observation}/post_sample_iter4.csv",
+    #     plot_multiple_algorithm_kde(file_path_list=[f"results/slcp/semple/80k/obs{num_observation}/post_sample_iter4.csv", f"results/slcp/snpe/4rounds/obs{num_observation}/post_sample_iter4.csv",
     #         f"results/slcp/snle/4rounds/obs{num_observation}/post_sample_iter4.csv", f"../sbibm/sbibm/tasks/slcp/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
-    #         legend_list=["JASS", "SNPE-C", "SNL", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$", r"$\theta_3$", r"$\theta_4$", r"$\theta_5$"], save_path="figures/slcp/multi_kde.pdf"
+    #         legend_list=["semple", "SNPE-C", "SNL", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$", r"$\theta_3$", r"$\theta_4$", r"$\theta_5$"], save_path="figures/slcp/multi_kde.pdf"
+
+    ############################################# TWISTED ########################################################
+    plot_pairs(file_path=f"results/twisted/semple/run1/post_sample_iter1.csv")

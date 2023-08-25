@@ -36,7 +36,7 @@ run_indices = 7
 for (run_index in run_indices){
   set.seed(run_index)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "run", run_index, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "semple", paste(subfolder, "run", run_index, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
   
   observedData = c(10,rep(0,19))

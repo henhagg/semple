@@ -23,7 +23,7 @@ def compute_sbibm_metric(metric_name, algorithm, task_name, input_dir, num_obser
     with open(f"{input_dir}/settings.json", "r") as openfile:
         settings_dict = json.load(openfile)
 
-    if(algorithm == "jass"):
+    if(algorithm == "semple"):
         num_simulation_per_iteration = settings_dict["num_simulation_per_iteration"]
         num_priorpred_samples = settings_dict["num_priorpred_samples"]
         num_iters = settings_dict["num_iters"]
@@ -67,7 +67,7 @@ def compute_nrmse(algorithm, input_dir, task_name, dim_param, num_observation, n
     with open(f"{input_dir}/run1/settings.json", "r") as openfile:
         settings_dict = json.load(openfile)
 
-    if(algorithm == "jass"):
+    if(algorithm == "semple"):
         num_simulation_per_iteration = settings_dict["num_simulation_per_iteration"]
         num_priorpred_samples = settings_dict["num_priorpred_samples"]
         num_iters = settings_dict["num_iters"]
@@ -118,18 +118,18 @@ def compute_multiple_sbibm_metrics_multiple_runs(metric_name_list, task_name, al
 
 if __name__ == '__main__':
     print("computing metrics")
-    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st"], task_name = "bernoulli_glm", algorithm = "jass", num_obs_range=range(1,2), subfolder = "/5k")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st"], task_name = "bernoulli_glm", algorithm = "semple", num_obs_range=range(1,2), subfolder = "/5k")
 
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "jass", num_obs_range=range(1,11), subfolder = "/K80")
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "jass", num_obs_range=range(1,11), subfolder = "/full_cov")
+    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "semple", num_obs_range=range(1,11), subfolder = "/K80")
+    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "semple", num_obs_range=range(1,11), subfolder = "/full_cov")
     
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "hyperboloid", algorithm = "jass", run_index_range=range(1,11), subfolder = "/10k")
+    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "hyperboloid", algorithm = "semple", run_index_range=range(1,11), subfolder = "/10k")
     # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "hyperboloid", algorithm = "snpe", run_index_range=range(6,11), subfolder = "/4rounds")
     
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "jass", num_obs_range=range(1,4), subfolder = "/80k")
+    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "semple", num_obs_range=range(1,4), subfolder = "/80k")
     # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "snpe", num_obs_range=range(5,11), subfolder = "/4rounds")
     # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "snle", num_obs_range=range(5,11), subfolder = "/4rounds")
 
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "ornstein_uhlenbeck", algorithm = "jass", run_index_range=range(4,11), subfolder = "/10k_prior")
+    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "ornstein_uhlenbeck", algorithm = "semple", run_index_range=range(4,11), subfolder = "/10k_prior")
     # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "ornstein_uhlenbeck", algorithm = "snpe", run_index_range=range(6,11), subfolder = "/40k_total")
 

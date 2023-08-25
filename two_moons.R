@@ -4,7 +4,7 @@ library(tictoc)
 library(rjson)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('gaumixfit_sbibm_K.R')
 source('models/two_moons/two_moons_model.R')
 
 # :::::::::: Parameters ::::::::::::::::::::
@@ -16,10 +16,10 @@ num_priorpred_samples = 2500
 
 burnin = 100
 num_iters = 4
-K_start = 30
+K_start = 1
 cov_structure = ""
 factor_cvMH = 1.2
-mixprob_thresh = 0 #0.001
+mixprob_thresh = 0#0.001
 verbose = 1
 MH_target = "likelihood"
 gllim_maxiter = 300
@@ -34,7 +34,7 @@ observation_indices = seq(1,2)
 for (num_observation in observation_indices){
   set.seed(num_observation)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "obs", num_observation, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "semple", paste(subfolder, "obs", num_observation, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
   
   settings_json = rjson::toJSON(param_list)

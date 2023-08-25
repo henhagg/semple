@@ -9,7 +9,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working direct
 source('gaumixfit_sbibm.R')
 source('models/hyperboloid/hyperboloid_model.R')
 
-#:::::::::::::::::: JASS parameters ::::::::::::::::::::::::::
+#:::::::::::::::::: semple parameters ::::::::::::::::::::::::::
 model_name = "hyperboloid"
 num_simulation_per_iteration = 10000
 num_samples_saved = 10000
@@ -37,7 +37,7 @@ tic()
 for (run_index in run_indices){
   set.seed(run_index)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "run", run_index, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "semple", paste(subfolder, "run", run_index, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
   
   start_time = Sys.time()

@@ -7,7 +7,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working direct
 source('gaumixfit_sbibm.R')
 source('models/ornstein_uhlenbeck/ornstein_uhlenbeck_model.R')
 
-# :::::::::: JASS PARAMETERS :::::::::::::::::::::::::::::::::::::::
+# :::::::::: semple PARAMETERS :::::::::::::::::::::::::::::::::::::::
 model_name = "ornstein_uhlenbeck"
 num_simulation_per_iteration = 10000
 num_samples_saved = 10000
@@ -36,7 +36,7 @@ tic()
 for (run_index in run_indices){
   set.seed(run_index)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "run", run_index, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "semple", paste(subfolder, "run", run_index, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
 
   settings_json = rjson::toJSON(param_list)

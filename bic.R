@@ -77,7 +77,7 @@ compute_bic = function(model_name, num_priorpred_samples, K_values, cov_structur
 }
 
 save_bic_to_csv = function(K_values, bic_values, model_name, num_priorpred_samples, cov_structure){
-  save_dir = file.path(getwd(), "results", model_name, "jass", "bic")
+  save_dir = file.path(getwd(), "results", model_name, "semple", "bic")
   if (!dir.exists(save_dir)) {dir.create(save_dir, recursive=TRUE)}
   
   write.table(rbind(K_values,bic_values), file = paste(save_dir,"/bic_",model_name,"_priorpred", num_priorpred_samples,
@@ -95,7 +95,7 @@ save_bic_plot = function(K_values, bic_values, model_name, num_priorpred_samples
 }
 
 plot_bic_from_file = function(model_name, num_priorpred_samples, cov_structure, K_min, K_max){
-  bic_table = read.csv(file=paste("results/",model_name,"/jass/bic/bic_",model_name,"_priorpred",num_priorpred_samples,"_cov",cov_structure,"_Kmin",K_min,"_Kmax",K_max,".csv",sep=""), header=FALSE)
+  bic_table = read.csv(file=paste("results/",model_name,"/semple/bic/bic_",model_name,"_priorpred",num_priorpred_samples,"_cov",cov_structure,"_Kmin",K_min,"_Kmax",K_max,".csv",sep=""), header=FALSE)
   print(bic_table)
   plot(unlist(bic_table[1,]), unlist(bic_table[2,]), type='b')
 }

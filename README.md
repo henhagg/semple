@@ -13,8 +13,6 @@ To run SeMPLE with with a specific model/task run the corresponding "model_name.
 
 Each model can be found in models/model_name/model_name_model.R. A function to simulate data from the model as well as the prior is defined here. The hyperboloid model and the Ornstein-Uhlenbeck process both have a single observed dataset found in models/model_name/num_observation_1. The Two Moons model and the the SLCP model instead uses the observed datasets from SBIBM by fetching them locally from the SBIBM repository cloned into the parent directory of the semple repository.
 
-Note that SeMPLE sometimes is referred to as (the working name) JASS in the code.
-
 ## SBIBM
 To run SNPE-C or SNL to produce results to be compared to SeMPLE results, install the SBIBM fork https://github.com/henhagg/sbibm. It contains modifications to output posterior samples from each SNPE-C and SNL algorithm iteration instead of only from the last algorithm iteration. Additionally, it is modified to output the runtime of SNPE-C and SNL. Furthermore, the fork contains implementations of the hyperboloid model and Orstein-Uhlenbeck process.
 

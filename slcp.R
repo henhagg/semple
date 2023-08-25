@@ -35,7 +35,7 @@ observation_indices = 1:3
 for (num_observation in observation_indices){
   set.seed(num_observation)
   
-  output_dir = file.path(getwd(), "results", model_name, "jass", paste(subfolder, "obs", num_observation, sep=''))
+  output_dir = file.path(getwd(), "results", model_name, "semple", paste(subfolder, "obs", num_observation, sep=''))
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive=TRUE)}
   
   observedData = unlist(read.csv(file=paste("../sbibm/sbibm/tasks/", model_name, "/files/num_observation_", num_observation, "/observation.csv", sep='')))
