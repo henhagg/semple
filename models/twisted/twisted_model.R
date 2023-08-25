@@ -17,7 +17,7 @@ prior_pdf = function(theta=theta){
     addterm = 0  
      }
   else{
-    addterm = sum(theta[3:length(theta)]^2)
+    addterm = sum(theta[3:length(theta)]^2 /2)
     }
   
   jointprior = exp(-theta[1]^2/200 - (theta[2]-b*theta[1]^2+100*b)^2 / 2 - addterm) 
