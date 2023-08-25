@@ -29,7 +29,7 @@ param_list = list(num_simulation_per_iteration=num_simulation_per_iteration, num
 
 #::::::::::::::::::: RUN INFERENCE ::::::::::::::::::::::::::
 # Read observation
-observedData = read.csv(file="results/hyperboloid/observation.csv", header = FALSE)
+observedData = read.csv(file="models/hyperboloid/num_observation_1/observation.csv", header = FALSE)
 run_indices = 1:10
 subfolder = "10k/" # e.g test/
 
