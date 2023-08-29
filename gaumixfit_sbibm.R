@@ -23,7 +23,6 @@ num_param = nrow(allpar)
 # initialize matrices 
 allpar = matrix(data=NA,nrow=num_param,ncol=num_samples_saved) # collects parameters from the prior
 sims = matrix(data=NA,nrow=nrow(sims),ncol=num_simulation_per_iteration)
-
 # initialize mixture posterior parameter arrays
 post_mix_prob = vector("list", num_iters+1)
 covar_proposal = vector("list", num_iters+1)
@@ -32,7 +31,6 @@ mean_proposal = vector("list", num_iters+1)
 
 ## Set K mixture components in the model
 K = K_start
-
 gllim_param = fit_gllim(responses,covariates,K,maxiter,verbose,cov_structure,mixprob_thresh,init_param=NULL)
 
 K = gllim_param$K
@@ -277,9 +275,9 @@ mixpdf = function(theta,probs,means,covars){
       pdf = pdf + probs[k]*mixtools::dmvnorm(theta,mu=means[,k],sigma=covars[,,k])
     }
   }else{  # make sure that covars is a matrix not an array or dmvnorm will give an error
-    covars_matrix = matrix(data=NA,nrow=nrow(covars),ncol=ncol(covars))
-    covars_matrix = covars[,,1]  # the latter is an array, let's strip the third dimension
-    covars = covars_matrix
+  #  covars_matrix = matrix(data=NA,nrow=nrow(covars),ncol=ncol(covars))
+  #  covars_matrix = covars[,,1]  # the latter is an array, let's strip the third dimension
+  #  covars = covars_matrix
     pdf = mixtools::dmvnorm(theta,mu=means,sigma=covars)
   }
   return(pdf)
@@ -295,9 +293,9 @@ par_inflated_mix = function(probs, means, covars, factor_cvMH=1){
     par_inflated_mix = mixtools::rmvnorm(1,mu=means[,k],sigma=factor_cvMH*covars[,,k]) # sample from k-th component
   }else{
     # make sure that covars is a matrix not an array or dmvnorm will give an error
-    covars_matrix = matrix(data=NA,nrow=nrow(covars),ncol=ncol(covars))
-    covars_matrix = covars[,,1]  # the latter is an array, let's strip the third dimension
-    covars = covars_matrix
+  #  covars_matrix = matrix(data=NA,nrow=nrow(covars),ncol=ncol(covars))
+  #  covars_matrix = covars[,,1]  # the latter is an array, let's strip the third dimension
+  #  covars = covars_matrix
     par_inflated_mix = mixtools::rmvnorm(1,mu=means,sigma=factor_cvMH*covars) 
   }
   
@@ -310,10 +308,19 @@ compute_post_param = function(A, b, c, Sigma, Gamma, num_param, K, dim_data){
   Sigma_star = array(NA,dim=c(num_param,num_param,K)) # L x L x K
   
   for (k in 1:K){
-    Sigma_star_k = solve(solve(Gamma[,,k]) + t(A[,,k])%*%solve(Sigma[,,k])%*%A[,,k])
-    Sigma_star[,,k] = Sigma_star_k
-    A_star[,,k] = Sigma_star_k %*% t(A[,,k]) %*% solve(Sigma[,,k])
-    b_star[,k] = Sigma_star_k %*% (solve(Gamma[,,k])%*%c[,k] - t(A[,,k])%*%solve(Sigma[,,k])%*%b[,k])
+    if(K==1){
+       Sigma_star = solve(solve(Gamma) + t(A)%*%solve(Sigma)%*%A)
+       A_star = Sigma_star %*% t(A) %*% solve(Sigma)
+       b_star = Sigma_star %*% (solve(Gamma)%*%c - t(A)%*%solve(Sigma)%*%b)
+    }
+    else
+    {
+      Sigma_star_k = solve(solve(Gamma[,,k]) + t(A[,,k])%*%solve(Sigma[,,k])%*%A[,,k])
+      Sigma_star[,,k] = Sigma_star_k
+      A_star[,,k] = Sigma_star_k %*% t(A[,,k]) %*% solve(Sigma[,,k])
+      b_star[,k] = Sigma_star_k %*% (solve(Gamma[,,k])%*%c[,k] - t(A[,,k])%*%solve(Sigma[,,k])%*%b[,k])
+    }
+    
   }
   return(list(A_star=A_star, b_star=b_star, Sigma_star=Sigma_star))
 }
@@ -322,9 +329,16 @@ compute_post_param = function(A, b, c, Sigma, Gamma, num_param, K, dim_data){
 compute_post_mix_prob = function(A, b, c, Sigma, Gamma, pi, K, observedData){
   post_mix_prob = vector(length=K)
   for (k in 1:K){
+    if(K==1){
+      c_star = A%*%c + b
+      Gamma_star = Sigma + A%*%Gamma%*%t(A)
+      post_mix_prob = pi*mixtools::dmvnorm(observedData, mu=c_star, sigma=Gamma_star)
+    }
+    else{
     c_star_k = A[,,k]%*%c[,k] + b[,k]
     Gamma_star_k = Sigma[,,k] + A[,,k]%*%Gamma[,,k]%*%t(A[,,k])
     post_mix_prob[k] = pi[k]*mixtools::dmvnorm(observedData, mu=c_star_k, sigma=Gamma_star_k)
+    }
   }
   post_mix_prob = post_mix_prob/sum(post_mix_prob)
   return(post_mix_prob)
@@ -334,7 +348,12 @@ compute_post_mix_prob = function(A, b, c, Sigma, Gamma, pi, K, observedData){
 compute_mean_proposal = function(A_star, observedData, b_star, num_param, K){
   mean_proposal = array(NA, dim=c(num_param, K))
   for (k in 1:K){
+    if(K==1){
+      mean_proposal = A_star%*%observedData + b_star
+    }
+    else{
     mean_proposal[,k] = A_star[,,k]%*%observedData + b_star[,k]
+    }
   }
   return(mean_proposal)
 }
@@ -343,7 +362,12 @@ compute_mean_proposal = function(A_star, observedData, b_star, num_param, K){
 mean_surrogate_likelihood = function(A, b, observedData, theta, K){
   mean_surrogate_likelihood = array(NA, dim=c(length(observedData), K))
   for (k in 1:K){
+    if(K==1){
+      mean_surrogate_likelihood = A%*%theta + b
+    }
+    else{
     mean_surrogate_likelihood[,k] = A[,,k]%*%theta + b[,k]
+    }
   }
   return(mean_surrogate_likelihood)
 }
@@ -352,7 +376,12 @@ mean_surrogate_likelihood = function(A, b, observedData, theta, K){
 likelihood_mix_prob = function(c, Gamma, pi, K, theta){
   likelihood_mix_prob = vector(length=K)
   for (k in 1:K){
+    if(K==1){
+      likelihood_mix_prob = pi*mixtools::dmvnorm(theta, mu=c, sigma=Gamma)
+    }
+    else{
     likelihood_mix_prob[k] = pi[k]*mixtools::dmvnorm(theta, mu=c[,k], sigma=Gamma[,,k])
+    }
   }
   likelihood_mix_prob = likelihood_mix_prob/sum(likelihood_mix_prob)
   return(likelihood_mix_prob)
