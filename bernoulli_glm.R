@@ -2,6 +2,8 @@ library(xLLiM)
 library(mixtools)
 library(tictoc)
 library(rjson)
+library(SFSI)
+library(mvtnorm)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
 source('gaumixfit_sbibm.R')
@@ -15,9 +17,9 @@ num_samples_saved = 10000
 num_priorpred_samples = 10000
 
 burnin = 100
-num_iters = 4
+num_iters = 2
 K_start = 10
-cov_structure = "i"
+cov_structure = ""
 factor_cvMH = 1.2
 mixprob_thresh = 0.03 #0.001
 verbose = 1
@@ -26,7 +28,7 @@ gllim_maxiter = 300
 
 param_list = list(num_simulation_per_iteration=num_simulation_per_iteration, num_samples_saved=num_samples_saved, num_priorpred_samples=num_priorpred_samples,
                   num_iters=num_iters, burnin=burnin, K_start=K_start, cov_structure=cov_structure, factor_cvMH=factor_cvMH, mixprob_thresh=mixprob_thresh, MH_target=MH_target,gllim_maxiter=gllim_maxiter)
-subfolder = "100k_i/" # e.g. test/
+subfolder = "10k_2iter/" # e.g. test/
 #:::::::::::::::::::::::::RUN INFERENCE:::::::::::::::::::::::::::::::
 
 tic()

@@ -1,13 +1,8 @@
 #:::: Generative model ::::::::::::::::::::::::::::::::
-library(SFSI)
-
 model = function(param, model_param=NULL){
   design_matrix = readBinary(file="models/bernoulli_glm/design_matrix.dat", verbose=FALSE)
   stimulus_I = readBinary(file="models/bernoulli_glm/stimulus_I.dat", verbose=FALSE)
   
-  # print(dim(design_matrix))
-  # print(dim(param))
-  # print(param)
   psi = design_matrix %*% param
   z = 1 / (1 + exp(-psi))
   y = as.numeric(runif(dim(design_matrix)[1]) < z)
