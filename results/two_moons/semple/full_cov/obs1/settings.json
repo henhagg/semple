@@ -1,0 +1,1 @@
+{"num_simulation_per_iteration":2500,"num_samples_saved":10000,"num_priorpred_samples":2500,"num_iters":4,"burnin":100,"K_start":30,"cov_structure":"","factor_cvMH":1.2,"mixprob_thresh":0,"MH_target":"likelihood","gllim_maxiter":300}

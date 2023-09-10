@@ -1,4 +1,6 @@
 figures/
 .Rhistory
 sbi-logs/
-results/
+results/bernoulli_glm
+results/gaussian_mixture
+results/twisted
