@@ -4,7 +4,7 @@ library(tictoc)
 library(rjson)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm_K.R')
+source('gaumixfit_sbibm.R')
 source('models/two_moons/two_moons_model.R')
 
 # :::::::::: Parameters ::::::::::::::::::::
@@ -16,7 +16,7 @@ num_priorpred_samples = 2500
 
 burnin = 100
 num_iters = 4
-K_start = 1
+K_start = 30
 cov_structure = ""
 factor_cvMH = 1.2
 mixprob_thresh = 0#0.001
@@ -30,7 +30,7 @@ subfolder = "full_cov/" # e.g. test/
 #:::::::::::::::::::::::::RUN INFERENCE:::::::::::::::::::::::::::::::
 
 tic()
-observation_indices = seq(1,2)
+observation_indices = seq(1,10)
 for (num_observation in observation_indices){
   set.seed(num_observation)
   
