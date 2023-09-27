@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,EMDP2
+5000,1,SEMPLE,0.9134301271805729
+10000,1,SEMPLE,0.7318834613052271

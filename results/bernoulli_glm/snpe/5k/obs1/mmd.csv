@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,MMD
+5000,1,SNPE,0.15174049139022827
+10000,1,SNPE,0.19993066787719727

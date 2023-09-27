@@ -1,6 +1,7 @@
 figures/
 .Rhistory
 sbi-logs/
-results/bernoulli_glm
+results/bernoulli_glm/jass
 results/gaussian_mixture
 results/twisted
+results/two_moons
