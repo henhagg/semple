@@ -124,6 +124,25 @@ def plot_aggregated_metric_vs_time(input_dir, obs_or_run, num_obs_or_run_total, 
     plt.show()
     
 ################################### POSTERIOR ####################################################
+def plot_mc_semple(input_dir, param_index_list):
+    with open(f"{input_dir}/settings.json", "r") as openfile:
+        settings_dict = json.load(openfile)
+
+    num_iters = settings_dict["num_iters"]
+
+    posterior_samples_list = []
+    for r in range(0,num_iters+1):
+        posterior_samples_list.append(pd.read_csv(f"{input_dir}/post_sample_iter{r}.csv", index_col=False, header=None))
+
+    for param_index in param_index_list:
+        param_df = pd.DataFrame()
+        for r, posterior_samples in enumerate(posterior_samples_list):
+            mc_df = pd.DataFrame({"value": posterior_samples.iloc[:,param_index], "iteration": r, "param_index": param_index})
+            param_df = pd.concat([param_df, mc_df])
+        
+        sns.lineplot(data=param_df, x=param_df.index, y="value", hue="iteration")
+        plt.show()
+
 def plot_pairs(file_path, save_path=None):
     posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
     sns_plot = sns.pairplot(posterior_samples)
@@ -419,6 +438,10 @@ if __name__ == '__main__':
     #     plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/final", "results/two_moons/snpe", "results/two_moons/snle"], 
     #         metric_name=metric_name, num_obs_total=10, save_path=f"figures/two_moons/algorithm_{metric_name}_vs_sims.pdf")
 
+    for metric_name in ["c2st", "emdp2", "mmd"]:
+        plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/full_cov", "results/two_moons/snpe/", "results/two_moons/snle"], 
+            metric_name=metric_name, num_obs_total=10, save_path=f"figures/two_moons/algorithm_{metric_name}_vs_sims.pdf")
+
     # for metric_name in ["c2st", "emdp2", "mmd"]:
     #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/final", "results/two_moons/semple/MHpost", "results/two_moons/semple/full_cov"],
     #         legend_list=["Surrogate likelihood", "Surrogate posterior", "Full covariance matrix"], metric_name=metric_name, num_obs_total=10, save_path=f"figures/two_moons/settings_{metric_name}_vs_sims.pdf")
@@ -430,6 +453,10 @@ if __name__ == '__main__':
 
     # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/two_moons/semple/final", "results/two_moons/snpe", "results/two_moons/snle"],
     #                                                     legend_list=["semple", "SNPE", "SNLE"], obs_or_run="obs", num_obs_or_run_total=10, save_path="figures/two_moons/time_vs_iter.pdf")
+
+    # for metric_name in ["c2st", "emdp2", "mmd"]:
+    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/two_moons/semple/full_cov", "results/two_moons/semple/full_cov_keepD0"],
+    #         legend_list=["Discard prior predictive D0", "Keep prior predictive D0"], metric_name=metric_name, obs_or_run="obs", num_obs_or_run_total=2, save_path=f"figures/two_moons/keepD0_{metric_name}_vs_sims.png")
 
     ##################################################### HYPERBOLOID ############################################
     # for metric_name in ["c2st", "emdp2", "mmd"]:
@@ -456,6 +483,10 @@ if __name__ == '__main__':
     # plot_median_time_vs_iteration(input_dir="results/hyperboloid/semple/10k", obs_or_run="run", num_obs_or_run_total=5)
     # plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=["results/hyperboloid/semple/10k", "results/hyperboloid/snpe/4rounds", "results/hyperboloid/snle/4rounds"],
     #                                                     legend_list=["semple", "SNPE", "SNLE"], obs_or_run="run", num_obs_or_run_total=5, save_path="figures/hyperboloid/time_vs_iter.pdf")
+
+    # for metric_name in ["c2st", "emdp2", "mmd"]:
+    #     plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/hyperboloid/semple/10k", "results/hyperboloid/semple/10k_keepD0"],
+    #         legend_list=["Discard prior predictive D0", "Keep prior predictive D0"], metric_name=metric_name, obs_or_run="run", num_obs_or_run_total=2, save_path=f"figures/hyperboloid/keepD0_{metric_name}_vs_sims.png")
 
     ################################################### ORNSTEIN-UHLENBECK ########################################
     # for metric_name in ["c2st", "emdp2", "mmd"]:
@@ -505,4 +536,37 @@ if __name__ == '__main__':
     #         legend_list=["semple", "SNPE-C", "SNL", "Reference"], parameter_name_list=[r"$\theta_1$", r"$\theta_2$", r"$\theta_3$", r"$\theta_4$", r"$\theta_5$"], save_path="figures/slcp/multi_kde.pdf"
 
     ############################################# TWISTED ########################################################
-    plot_pairs(file_path=f"results/twisted/semple/run1/post_sample_iter1.csv")
+    # plot_pairs(file_path=f"results/twisted/semple/run1/post_sample_iter1.csv")
+
+    ############################################# BERNOULLI GLM ##################################################
+    # plot_metric_vs_sims(input_dir="results/bernoulli_glm/semple/umberto/obs1", metric_name="c2st", ylim=[0,1])
+    # plot_metric_vs_sims(input_dir="results/bernoulli_glm/semple/umberto/obs2", metric_name="c2st", ylim=[0,1])
+    # plot_median_metric_vs_sims(input_dir="results/bernoulli_glm/semple/2k_2iter/", metric_name="c2st", num_obs_total=3, ylim=[0,1])
+    # plot_median_metric_vs_sims(input_dir="results/bernoulli_glm/semple/5k_2iter/", metric_name="c2st", num_obs_total=3, ylim=[0,1])
+    # plot_median_metric_vs_sims(input_dir="results/bernoulli_glm/semple/10k_2iter/", metric_name="c2st", num_obs_total=3, ylim=[0,1])
+    
+    # plot_mc_semple(input_dir="results/bernoulli_glm/semple/10k_2iter/obs3", param_index_list=[0])
+
+    # plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/bernoulli_glm/semple/2k_2iter/", "results/bernoulli_glm/semple/5k_2iter/", "results/bernoulli_glm/semple/10k_2iter/"], 
+    #                                              legend_list=["2.5k", "5k", "10k"], metric_name="c2st", obs_or_run="obs", num_obs_or_run_total=3, ylim=[0,1])
+
+    # plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/bernoulli_glm/semple/2k_2iter/", "results/bernoulli_glm/semple/5k_2iter/", "results/bernoulli_glm/semple/10k_2iter/"], 
+                                                #  legend_list=["2.5k", "5k", "10k"], metric_name="emdp2", obs_or_run="obs", num_obs_or_run_total=3)
+    
+    # plot_multiple_settings_median_metric_vs_sims(input_dir_list=["results/bernoulli_glm/semple/2k_2iter/", "results/bernoulli_glm/semple/5k_2iter/", "results/bernoulli_glm/semple/10k_2iter/"], 
+                                                #  legend_list=["2.5k", "5k", "10k"], metric_name="mmd", obs_or_run="obs", num_obs_or_run_total=3)
+
+    # for num_observation in range(1,2):
+    #     plot_multiple_pairs(file_path_list=[f"results/bernoulli_glm/semple/2k_2iter/obs{num_observation}/post_sample_iter1.csv", f"results/bernoulli_glm/semple/2k_2iter/obs{num_observation}/post_sample_iter2.csv", 
+    #                                         f"../sbibm/sbibm/tasks/bernoulli_glm/files/num_observation_{num_observation}/reference_posterior_samples.csv.bz2"],
+    #         legend_list=["SeMPLE iter1 (2500 simulations)", "SeMPLE iter2 (5000 simulations)", "Reference"], parameter_name_list=[f"parameter_{i}" for i in range(1,11)], fig_height=1.2, thin_interval=10,
+    #         fig_show=True)
+
+    # for settings in ["2k", "5k", "10k"]:
+    #     for metric_name in ["c2st", "emdp2", "mmd"]:
+    #         plot_multiple_algorithm_median_metric_vs_sims(input_dir_list=[f"results/bernoulli_glm/semple/{settings}_2iter", f"results/bernoulli_glm/snpe/{settings}", f"results/bernoulli_glm/snle/{settings}"], 
+    #             metric_name=metric_name, obs_or_run="obs", num_obs_or_run_total=3, save_path=f"figures/bernoulli_glm/algorithm_{metric_name}_vs_sims_{settings}.pdf")
+    
+    # for settings in ["2k", "5k", "10k"]:
+    #     plot_multiple_algorithm_median_time_vs_iteration(input_dir_list=[f"results/bernoulli_glm/semple/{settings}_2iter", f"results/bernoulli_glm/snpe/{settings}", f"results/bernoulli_glm/snle/{settings}"],
+    #                                                     legend_list=["SeMPLE", "SNPE-C", "SNL"], obs_or_run="obs", num_obs_or_run_total=3, save_path=f"figures/bernoulli_glm/time_vs_iter_{settings}.pdf")
