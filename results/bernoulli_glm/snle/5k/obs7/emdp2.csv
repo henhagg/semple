@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,EMDP2
+5000,7,SNLE,0.5867143080846404
+10000,7,SNLE,0.6424714783000731

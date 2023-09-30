@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,C2ST
+5000,4,SNLE,0.6186000108718872
+10000,4,SNLE,0.5668500065803528

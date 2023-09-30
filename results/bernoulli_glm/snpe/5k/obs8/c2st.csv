@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,C2ST
+5000,8,SNPE,0.7500500082969666
+10000,8,SNPE,0.7347999811172485
