@@ -1,0 +1,3 @@
+num_simulations,num_observation,algorithm,C2ST
+5000,7,SEMPLE,0.746399998664856
+10000,7,SEMPLE,0.8585500121116638
