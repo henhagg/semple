@@ -17,14 +17,7 @@ def run_algorithm(algorithm, task_name, num_samples, num_observation, num_simula
         posterior_samples_list, _, _, elapsed_time = snpe(task=task, num_samples=num_samples, num_observation=num_observation, num_simulations=num_simulations, num_rounds=num_rounds, simulation_batch_size=simulation_batch_size)
     elif(algorithm=="snle"):
         posterior_samples_list, _, _, elapsed_time = snle(task=task, num_samples=num_samples, num_observation=num_observation, num_simulations=num_simulations, 
-        num_rounds=num_rounds, simulation_batch_size=simulation_batch_size, mcmc_parameters = {
-        "num_chains": 100,
-        "thin": 10,
-        "warmup_steps": 100,
-        "init_strategy": "sir",
-        "sir_batch_size": 1000,
-        "sir_num_batches": 100,
-    })
+        num_rounds=num_rounds, simulation_batch_size=simulation_batch_size)
     else:
         raise Exception("Invalid algorithm")
 
@@ -68,12 +61,26 @@ def run_sbibm_run(algorithm, task_name, run_indices_list, num_simulations, num_r
         save_to_csv(posterior_samples_list, save_path)
 
 if __name__ == '__main__':
-    print("run_sbibm")
-    run_sbibm_run(algorithm="snpe", task_name = "twisted", run_indices_list=range(1,2), num_simulations = 100, num_rounds = 1, num_samples = 100, subfolder_save="/test", simulation_batch_size=1)
-    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(1,2), num_simulations = 100, num_rounds = 1, num_samples = 100, subfolder_save="/test", simulation_batch_size=1)
+    print("running_sbibm")
 
-    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(6,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/test", simulation_batch_size=1)
-    # run_sbibm_run(algorithm="snpe", task_name = "ornstein_uhlenbeck", run_indices_list=range(6,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/40k_total", simulation_batch_size=1)
+    # run_sbibm_obs(algorithm="snle", task_name = "two_moons", observation_indices_list=range(1,11), num_simulations = 10000, num_rounds = 4, num_samples = 10000, subfolder_save="/10k_4rounds_resample")
+    # run_sbibm_obs(algorithm="snpe", task_name = "two_moons", observation_indices_list=range(1,11), num_simulations = 10000, num_rounds = 10, num_samples = 10000, subfolder_save="/10k_test")
+
+    # run_sbibm_run(algorithm="snpe", task_name = "hyperboloid", run_indices_list=range(1,11), num_simulations = 10000, num_rounds = 4, num_samples = 10000, subfolder_save="/10k_4rounds", simulation_batch_size=1)
+    # run_sbibm_run(algorithm="snle", task_name = "hyperboloid", run_indices_list=range(1,11), num_simulations = 10000, num_rounds = 4, num_samples = 10000, subfolder_save="/10k_4rounds", simulation_batch_size=1)
+    run_sbibm_run(algorithm="snle", task_name = "hyperboloid", run_indices_list=range(1,11), num_simulations = 40000, num_rounds = 4, num_samples = 10000, subfolder_save="/4rounds_resample", simulation_batch_size=1)
+
+    # run_sbibm_obs(algorithm="snpe", task_name="bernoulli_glm", observation_indices_list=range(4,11), num_simulations=10000, num_rounds=2, num_samples=10000, subfolder_save="/5k")
+    # run_sbibm_obs(algorithm="snle", task_name="bernoulli_glm", observation_indices_list=range(4,11), num_simulations=10000, num_rounds=2, num_samples=10000, subfolder_save="/5k")
+
+    # run_sbibm_obs(algorithm="snpe", task_name="bernoulli_glm", observation_indices_list=range(1,4), num_simulations=5000, num_rounds=2, num_samples=10000, subfolder_save="/2k")
+    # run_sbibm_obs(algorithm="snpe", task_name="bernoulli_glm", observation_indices_list=range(1,4), num_simulations=10000, num_rounds=2, num_samples=10000, subfolder_save="/5k")
+    # run_sbibm_obs(algorithm="snpe", task_name="bernoulli_glm", observation_indices_list=range(1,4), num_simulations=20000, num_rounds=2, num_samples=10000, subfolder_save="/10k")
+
+    # run_sbibm_run(algorithm="snpe", task_name = "twisted", run_indices_list=range(1,2), num_simulations = 100, num_rounds = 1, num_samples = 100, subfolder_save="/test", simulation_batch_size=1)
+
+    # run_sbibm_run(algorithm="snpe", task_name = "ornstein_uhlenbeck", run_indices_list=range(3,11), num_simulations = 40000, num_rounds = 10, num_samples = 10000, subfolder_save="/10rounds", simulation_batch_size=1)
+    # run_sbibm_run(algorithm="snle", task_name = "ornstein_uhlenbeck", run_indices_list=range(1,11), num_simulations = 40000, num_rounds = 10, num_samples = 10000, subfolder_save="/10rounds_resample", simulation_batch_size=1)
+
     # run_sbibm_obs(algorithm="snle", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
     # run_sbibm_obs(algorithm="snpe", task_name="slcp", observation_indices_list=range(5,11), num_simulations=80000, num_rounds=4, num_samples=10000, subfolder_save="/4rounds")
-
