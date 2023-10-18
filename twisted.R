@@ -5,7 +5,7 @@ library(mvtnorm)
 library(rjson)
  
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm_K.R')
+source('gaumixfit_sbibm.R')
 source('models/twisted/twisted_model.R')
 
 
@@ -15,7 +15,7 @@ num_simulation_per_iteration = 10000
 num_samples_saved = 10000
 num_priorpred_samples = 10000
 burnin = 100
-num_iters = 4
+num_iters = 2
 K_start = 10
 cov_structure = "i"
 factor_cvMH = 1
@@ -32,7 +32,7 @@ subfolder = "" # e.g test/
 
 
 tic()
-run_indices = 7
+run_indices = 1
 for (run_index in run_indices){
   set.seed(run_index)
   
