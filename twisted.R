@@ -5,7 +5,7 @@ library(mvtnorm)
 library(rjson)
  
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm_K.R')
+source('gaumixfit_sbibm.R')
 source('models/twisted/twisted_model.R')
 
 
