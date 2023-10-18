@@ -3,12 +3,15 @@
 SeMPLE is a framework for simulation-based inference that learns surrogate models for the likelihood function and the posterior distribution of model parameters, and outputs draws from the posterior. It provides a faster and lightweight solution compared to samplers using neural networks for density estimation.
 
 ## Setup
-Clone the SBIBM fork https://github.com/henhagg/sbibm into the parent directory of the semple repository to get local access to the observed data sets and reference samples of the Two Moons and SLCP models.
+SeMPLE is written in R. To run SeMPLE you need to install the xLLiM package that gives access to the GLLiM function.
 
 Run the following command in R to get the correct version of xLLiM: 
 ```commandline
 devtools::install_github("epertham/xLLiM", ref = "devel")
 ```
+Some of the tasks use data and reference posterior draws provided by the SBIBM Python package. Clone the SBIBM fork https://github.com/henhagg/sbibm into the parent directory of the semple repository to get local access to the observed data sets and reference samples of the Two Moons and SLCP models.
+
+
 
 ## Running SeMPLE
 To run SeMPLE with with a specific model/task run the corresponding "model_name.R" script, e.g. "two_moons.R". The algorithm outputs are saved into the results directory.
