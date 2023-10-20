@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import pandas as pd
 import sbibm
-plt.style.use(Path.cwd() / Path('./make_figure_stylesheet.txt'))
+plt.style.use(Path.cwd() / Path('make_figure_stylesheet.txt'))
 
 path_results = Path.cwd() / Path('results', 'two_moons')
 

@@ -6,7 +6,7 @@ import sbibm
 from sbibm.metrics import c2st
 import torch
 from tqdm import tqdm
-plt.style.use(Path.cwd() / Path('./make_figure_stylesheet.txt'))
+plt.style.use(Path.cwd() / Path('make_figure_stylesheet.txt'))
 
 path_results = Path.cwd() / Path('results', 'two_moons')
 
