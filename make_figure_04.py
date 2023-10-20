@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-plt.style.use('./stylesheet.txt')
-from matplotlib.gridspec import GridSpec
 from pathlib import Path
+from matplotlib.gridspec import GridSpec
 import pandas as pd
 import sbibm
 from scipy.ndimage import gaussian_filter1d
+plt.style.use(Path.cwd() / Path('./make_figure_stylesheet.txt'))
 
 path_results = Path.cwd() / Path('results', 'hyperboloid')
 methods_list = ['semple/10k', 'snpe/40k_10rounds', 'snle/10rounds_resample']

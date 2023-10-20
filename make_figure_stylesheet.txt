@@ -1,0 +1,30 @@
+
+font.family: sans-serif 
+
+lines.linewidth: 2
+
+axes.linewidth: 2
+axes.titlesize : 16
+axes.labelsize : 14
+
+xtick.bottom: True
+xtick.top: False
+xtick.direction: out
+xtick.major.size: 5
+xtick.major.width: 1
+xtick.minor.size: 3
+xtick.minor.width: .5
+xtick.minor.visible: True
+xtick.labelsize : 12
+
+ytick.left: True
+ytick.right: False
+ytick.direction: out
+ytick.major.size: 5
+ytick.major.width: 1
+ytick.minor.size: 3
+ytick.minor.width: .5
+ytick.minor.visible: True
+ytick.labelsize : 12
+
+path.simplify: True
