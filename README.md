@@ -23,8 +23,15 @@ To run SNPE-C or SNL to produce results to be compared to SeMPLE results, instal
 
 ## Reproducing results in the main paper
 - Figures in the main paper can be reproduced by running the scripts `make_figure_XX.py`
-- calculations reproducing results similar to Table 1 can be produced by running the script yyy (results are machine-dependent).
-
+- Calculations reproducing results similar to Table 1 can be produced by running the script energy_test.py (results are machine-dependent), prior to launching the script:
+  - Go to branch energy_test of this repository, install pyjoules:
+  ```commandline
+  $pip install pyjoules
+  ```
+  - For each of bernoulli_glm.R, two_moons.R, hyperboloid.R, ornstein_uhlenbeck.R, set your working directory as the path of the project
+  - Add the path of the GNU library packages at the end of energy_test.py
+  - The results are saved in ./energy_results/
+  
 ## Files explanation
 model_name.R - runs SeMPLE with a specific model.
 
