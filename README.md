@@ -23,8 +23,8 @@ To run SNPE-C or SNL to produce results to be compared to SeMPLE results, instal
 
 ## Reproducing results in the main paper
 - Figures in the main paper can be reproduced by running the scripts `make_figure_XX.py`
-- Calculations reproducing results similar to Table 1 can be produced by running the script energy_test.py (results are machine-dependent), prior to launching the script:
-  - Go to branch energy_test of this repository, install pyjoules:
+- Calculations reproducing results similar to Table 1 can be produced by running the script energy_test.py (results are machine-dependent), prior launching the script:
+  - Go to branch energy_test of this repository and install pyjoules:
   ```commandline
   $pip install pyjoules
   ```
