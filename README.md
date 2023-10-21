@@ -22,7 +22,7 @@ Each model can be found in models/model_name/model_name_model.R. A function to s
 To run SNPE-C or SNL to produce results to be compared to SeMPLE results, install the SBIBM fork https://github.com/henhagg/sbibm. It contains modifications to output posterior samples from each SNPE-C and SNL algorithm iteration instead of only from the last algorithm iteration. Additionally, it is modified to output the runtime of SNPE-C and SNL. Furthermore, the fork contains implementations of the hyperboloid model and Orstein-Uhlenbeck process.
 
 ## Reproducing results in the main paper
-- Figures in the main paper can be reproduced by running the scripts `make_figure_XX.py`
+- Figures in the main paper can be reproduced by running the Python scripts `make_figure_XX.py` (make sure to first change the working directory to be the semple folder).  
 - Calculations reproducing results similar to Table 1 can be produced by running the script energy_test.py (results are machine-dependent), prior launching the script:
   - Go to branch energy_test of this repository and install pyjoules:
   ```commandline
