@@ -18,7 +18,10 @@ for method in methods_list:
     posterior_samples[method] = {}
     for obs in [1, 8, 9]:
         if method != 'reference':
-            filename = path_results / f'{method}/obs{obs}/post_sample_iter4.csv'
+            if method == 'semple/full_cov':  # plot SeMPLE results from round 4
+               filename = path_results / f'{method}/obs{obs}/post_sample_iter4.csv'
+            else:                            # plot SNL and SNPE-C results from round 10
+               filename = path_results / f'{method}/obs{obs}/post_sample_iter10.csv'
             posterior_samples[method][obs] = pd.read_csv(
                 filename, header=None).values
         else:
