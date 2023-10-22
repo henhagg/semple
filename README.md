@@ -16,7 +16,7 @@ Some of the tasks use data and reference posterior draws provided by the SBIBM P
 ## Running SeMPLE
 To run SeMPLE with with a specific model/task run the corresponding "model_name.R" script, e.g. "two_moons.R". The algorithm outputs are saved into the results directory.
 
-Each model can be found in models/model_name/model_name_model.R. A function to simulate data from the model as well as the prior is defined there. The hyperboloid model, the Ornstein-Uhlenbeck and the twisted-prior models have a single observed dataset found in models/model_name/num_observation_1. The Two Moons, Bernoulli GLM and the the SLCP models instead use the observed datasets from SBIBM, by fetching them locally from the SBIBM repository cloned into the parent directory of the semple repository.
+Model definitions can be found in models/model_name/model_name_model.R. A function to simulate data from the model as well as the prior is defined there. The hyperboloid model, the Ornstein-Uhlenbeck and the twisted-prior models have a single observed dataset found in models/model_name/num_observation_1. The Two Moons, Bernoulli GLM and the the SLCP models instead use the observed datasets from SBIBM, by fetching them locally from the SBIBM repository cloned into the parent directory of the "semple" repository.
 
 ## SBIBM
 To run SNPE-C or SNL to produce results to be compared to SeMPLE results, install the SBIBM fork https://github.com/henhagg/sbibm. It contains modifications to output posterior samples from each SNPE-C and SNL algorithm iteration instead of only from the last algorithm iteration. Additionally, it is modified to output the runtime of SNPE-C and SNL. Furthermore, the fork contains implementations of the hyperboloid model and Orstein-Uhlenbeck process.
