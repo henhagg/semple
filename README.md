@@ -1,6 +1,6 @@
 # Sequential Mixture Posterior and Likelihood Estimation (SeMPLE)
 
-SeMPLE is a framework for simulation-based inference that learns surrogate models for the likelihood function and the posterior distribution of model parameters, and outputs draws from the posterior. It provides a faster and lightweight solution compared to samplers using neural networks for density estimation.
+SeMPLE is a framework for simulation-based inference that learns surrogate models for the likelihood function and the posterior distribution of model parameters, and outputs draws from the posterior. It provides a faster and lightweight solution compared to samplers using neural networks for density estimation, while retaining accuracy.
 
 ## Setup
 SeMPLE is written in R. To run SeMPLE you need to install the xLLiM package that gives access to the GLLiM function.
