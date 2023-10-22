@@ -9,7 +9,7 @@ Run the following command in R to get the correct version of xLLiM:
 ```commandline
 devtools::install_github("epertham/xLLiM", ref = "devel")
 ```
-Some of the tasks use data and reference posterior draws provided by the SBIBM Python package. Clone the SBIBM fork https://github.com/henhagg/sbibm into the parent directory of the semple repository to get local access to the observed data sets and reference samples of the Two Moons and SLCP models.
+Some of the tasks use data and reference posterior draws provided by the SBIBM Python package. Clone the SBIBM fork https://github.com/henhagg/sbibm into the parent directory of the semple repository to get local access to the observed data sets and reference posterior samples.
 
 
 
