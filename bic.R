@@ -3,13 +3,14 @@ library(mixtools)
 library(tictoc)
 library(foreach)
 library(doParallel)
+#library(SFSI) # bernoulli GLM read binary
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
 
 #::::::::::::::::::::::BIC COMPUTATION FUNCTION:::::::::::::::::::::::::::::::
 
 compute_bic = function(model_name, num_priorpred_samples, K_values, cov_structure, gllim_verb){
   tic("total")
-  source(paste("models/",model_name,"_model.R",sep=""))
+  source(paste("models/",model_name,"/",model_name,"_model.R",sep=""))
   
   D = dim_data
   L = num_param
@@ -101,14 +102,24 @@ plot_bic_from_file = function(model_name, num_priorpred_samples, cov_structure, 
 }
 
 
-#::::::::::::: PARAMETERS ::::::::::::::::::::::::::::::
+#::::::::::::: TWO MOONS ::::::::::::::::::::::::::::::
 cov_structure = ""
-gllim_verb = 0
-model_name = "ornstein_uhlenbeck"
-num_priorpred_samples = 50000
+model_name = "two_moons"
+num_priorpred_samples = 2500
 
-K_values = c(2,4,6,8,10,12)
-bic_values = compute_bic(model_name=model_name, num_priorpred_samples=num_priorpred_samples, K_values=K_values, cov_structure=cov_structure, gllim_verb=gllim_verb)
+K_values = seq(10,70,10)
+bic_values = compute_bic(model_name=model_name, num_priorpred_samples=num_priorpred_samples, K_values=K_values, cov_structure=cov_structure, gllim_verb=0)
+plot(K_values, bic_values, type="b", xlab="K", ylab="BIC")
+save_bic_to_csv(K_values, bic_values, model_name, num_priorpred_samples, cov_structure)
+save_bic_plot(K_values, bic_values, model_name, num_priorpred_samples, cov_structure)
+
+#::::::::::::: MULTIPLE HYPERBOLOID ::::::::::::::::::::::::::::::
+cov_structure = "i"
+model_name = "hyperboloid"
+num_priorpred_samples = 10000
+
+K_values = seq(10,50,10)
+bic_values = compute_bic(model_name=model_name, num_priorpred_samples=num_priorpred_samples, K_values=K_values, cov_structure=cov_structure, gllim_verb=0)
 plot(K_values, bic_values, type="b", xlab="K", ylab="BIC")
 save_bic_to_csv(K_values, bic_values, model_name, num_priorpred_samples, cov_structure)
 save_bic_plot(K_values, bic_values, model_name, num_priorpred_samples, cov_structure)
