@@ -1,12 +1,12 @@
 gaumixfit = function(observedData,burnin,K_start,cov_structure,maxiter=100,prior_pdf,sample_prior,jacobian,model,num_iters,factor_cvMH=1.2,
                      mixprob_thresh=0,dim_data,verbose=1,MH_target="likelihood",model_name,model_param=NULL,num_samples_saved,
-                     num_simulation_per_iteration,delayed_acceptance=FALSE,delta_percentile,num_abc_mcmc,start_time,output_dir)
+                     num_simulation_per_iteration,start_time,output_dir)
 {
 
-# if(num_simulation_per_iteration > num_samples_saved){
-#   stop("num_simulation_per_iteration > num_samples_saved. Not all simulation in an iteration are saved.
-#      Consider increasing num_samples_saved or simulations are discarded.")
-# }
+if(num_simulation_per_iteration > num_samples_saved){
+  stop("num_simulation_per_iteration > num_samples_saved. Not all simulation in an iteration are saved.
+     Consider increasing num_samples_saved or simulations are discarded.")
+}
 
 # prior predictive parameters and samples
 allpar = replicate(num_priorpred_samples, sample_prior())
@@ -108,83 +108,21 @@ for(t in 1:num_iters){
     mean_proposal_prev = mean_proposal[[t-1]]
     covar_proposal_prev = covar_proposal[[t-1]]
     
-    if(t<num_iters || delayed_acceptance==FALSE){ # sample normally with MH if it is not the last iteration or delayed_acceptance is set to FALSE
-      if(MH_target=="post"){
-        MH_sample_post = sample_MH_surrogatepost(proposal_old, post_mix_prob, mean_proposal, covar_proposal, prior_pdf, t, post_mix_prob_prev,
-                                                 mean_proposal_prev, covar_proposal_prev, factor_cvMH, num_samples_saved, burnin)
-        allparMCMC = MH_sample_post$param
-        accrate = MH_sample_post$accrate
-        
-      }else if(MH_target=="likelihood"){
-        MH_sample_lik = sample_MH_surrogatelik(proposal_old, prior_pdf, post_mix_prob_prev, mean_proposal_prev, covar_proposal_prev, factor_cvMH,
-                                               A, b, c, Gamma, Sigma, prior_mix_prob, K, observedData, num_samples_saved, burnin)
-        allparMCMC = MH_sample_lik$param
-        accrate = MH_sample_lik$accrate
-        
-      }else{
-        warning('no valid MH target distribution provided')
-      }
+    if(MH_target=="post"){
+      MH_sample_post = sample_MH_surrogatepost(proposal_old, post_mix_prob, mean_proposal, covar_proposal, prior_pdf, t, post_mix_prob_prev,
+                                               mean_proposal_prev, covar_proposal_prev, factor_cvMH, num_samples_saved, burnin)
+      allparMCMC = MH_sample_post$param
+      accrate = MH_sample_post$accrate
+    
+    }else if(MH_target=="likelihood"){
+      MH_sample_lik = sample_MH_surrogatelik(proposal_old, prior_pdf, post_mix_prob_prev, mean_proposal_prev, covar_proposal_prev, factor_cvMH,
+                                             A, b, c, Gamma, Sigma, prior_mix_prob, K, observedData, num_samples_saved, burnin)
+      allparMCMC = MH_sample_lik$param
+      accrate = MH_sample_lik$accrate
       
-    }else{ # perform ABC-MCMC with delayed acceptance
-      print("ABC-MCMC")
-      
-      # set delta to percentile of distances from previous iteration
-      sims_prev = sims
-      distances_prev = rep(NA, ncol(sims_prev))
-      for(i in 1:ncol(sims_prev)){
-        distances_prev[i] = sqrt(sum((sims_prev[,i]-observedData)^2))
-      }
-      delta = quantile(unique(distances_prev, MARGIN=2),probs=delta_percentile)
-      print(delta)
-      
-      num_MCMC = num_abc_mcmc + burnin
-      allparMCMC = matrix(data=NA,nrow=length(proposal_old),ncol=num_MCMC)
-      
-      likelihood_mix_prob_old = likelihood_mix_prob(c, Gamma, prior_mix_prob, K, proposal_old)
-      mean_surrogate_likelihood_old = mean_surrogate_likelihood(A, b, observedData, proposal_old, K)
-      surrogatelik_old = mixpdf(theta=observedData, probs=likelihood_mix_prob_old, mean=mean_surrogate_likelihood_old, covars=Sigma)
-      
-      num_accept=0
-      for(j in 1:num_MCMC){
-        proposal = par_inflated_mix(probs=post_mix_prob_prev,means=mean_proposal_prev,covars=covar_proposal_prev,factor_cvMH=factor_cvMH)
-        
-        jac = jacobian(theta_old=proposal_old,theta=proposal)
-        
-        likelihood_mix_prob = likelihood_mix_prob(c, Gamma, prior_mix_prob, K, proposal)
-        mean_surrogate_likelihood = mean_surrogate_likelihood(A, b, observedData, t(proposal), K)
-        surrogatelik = mixpdf(theta=observedData, probs=likelihood_mix_prob, mean=mean_surrogate_likelihood, covars=Sigma)
-        
-        MHratio = min(1,surrogatelik/surrogatelik_old * jac * prior_pdf(proposal)/prior_pdf(proposal_old) *
-                        mixpdf(theta=proposal_old,probs=post_mix_prob_prev,means=mean_proposal_prev,covars=factor_cvMH*covar_proposal_prev)/
-                        mixpdf(theta=proposal,probs=post_mix_prob_prev,means=mean_proposal_prev,covars=factor_cvMH*covar_proposal_prev))
-        
-        if(is.nan(MHratio)){ # invalid MH ratio
-          allparMCMC[,j] = proposal_old
-        }else if(runif(1)<MHratio){ # accepted in the MH step, perform delayed acceptance step
-          simData = model(proposal, model_param)
-          distance = sqrt(sum((simData-observedData)^2))
-          
-          u2 = runif(1)
-          
-          if((distance<delta) && (u2<(surrogatelik_old/surrogatelik))){
-            proposal_old = proposal
-            allparMCMC[,j] = proposal
-            surrogatelik_old = surrogatelik
-            num_accept = num_accept + 1
-          }
-          else{# reject proposal
-            allparMCMC[,j] = proposal_old
-          }
-        }
-        else{ # reject proposal
-          allparMCMC[,j] = proposal_old
-        }
-      }
-      
-      num_samples_saved = num_abc_mcmc
-      accrate = num_accept/num_samples_saved # the MCMC acceptance rate
-      
-    } # ends the ELSE for delayed acceptance
+    }else{
+      warning('no valid MH target distribution provided')
+    }
     
     write.table(accrate, file = paste(output_dir ,"/accrate_iter", t, ".csv", sep = ''), sep = ",", row.names = F, col.names = F)
     
