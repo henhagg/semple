@@ -78,6 +78,7 @@ for m, method in enumerate(methods_list):
     ax[0].fill_between(x, yinf, ysup, alpha=0.20)
 ax[0].set_ylim(0.50, 1.00)
 ax[0].set_xticks([2500, 5000, 7500, 10_000])
+ax[0].set_xticklabels([10_000, 20_000, 30_000, 40_000])
 ax[0].set_xlabel('Number of simulations')
 ax[0].set_ylabel('C2ST')
 
@@ -93,6 +94,7 @@ for m, method in enumerate(methods_list):
     ax[1].fill_between(x, yinf, ysup, alpha=0.20)
     ax[1].scatter(x, y, s=20, c=colors[m])
 ax[1].set_xticks([2500, 5000, 7500, 10_000])
+ax[1].set_xticklabels([10_000, 20_000, 30_000, 40_000])
 ax[1].set_xlabel('Number of simulations')
 ax[1].set_ylabel('Cumulative elapsed time [minutes]')
 ax[1].legend(loc='upper left')

@@ -12,7 +12,10 @@ methods_list = ['semple/10k', 'snpe/40k_10rounds', 'snle/10rounds_resample']
 
 posterior_samples = {}
 for method in methods_list:
-    filename = path_results / f'{method}/run{5}/post_sample_iter4.csv'
+    if method == 'semple/10k':  # plot SeMPLE results from round 4
+        filename = path_results / f'{method}/run{5}/post_sample_iter4.csv'
+    else:
+        filename = path_results / f'{method}/run{5}/post_sample_iter10.csv'
     posterior_samples[method] = pd.read_csv(
         filename, header=None).values
 
