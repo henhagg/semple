@@ -31,7 +31,7 @@ subfolder = "80k/" # e.g test/
 
 
 tic()
-observation_indices = 1:3
+observation_indices = 1:10
 for (num_observation in observation_indices){
   set.seed(num_observation)
   

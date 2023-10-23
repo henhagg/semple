@@ -30,7 +30,7 @@ param_list = list(num_simulation_per_iteration=num_simulation_per_iteration, num
 observedData = read.csv(file="models/ornstein_uhlenbeck/num_observation_1/observation.csv")
 subfolder = "10k_prior/" # e.g. test/
 
-run_indices = 10
+run_indices = 1:10
 
 tic()
 for (run_index in run_indices){
