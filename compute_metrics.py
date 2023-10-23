@@ -48,7 +48,7 @@ def compute_sbibm_metric(metric_name, algorithm, task_name, input_dir, num_obser
         elif(metric_name == "emdp1"):
             metric_score = calc_emd(reference_samples.numpy(), posterior_samples.to_numpy(), p=1, numItermax=1_000_000)
         elif(metric_name == "emdp2"):
-            metric_score = calc_emd(reference_samples.numpy(), posterior_samples.to_numpy(), p=2, numItermax=1_000_000)
+            metric_score = calc_emd(reference_samples.numpy(), posterior_samples.to_numpy(), p=2, numItermax=5_000_000)
         elif(metric_name == "mmd"):
             posterior_samples_tensor = torch.tensor(posterior_samples.values)
             metric_score = mmd(reference_samples, posterior_samples_tensor).item()
@@ -118,18 +118,27 @@ def compute_multiple_sbibm_metrics_multiple_runs(metric_name_list, task_name, al
 
 if __name__ == '__main__':
     print("computing metrics")
-    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st"], task_name = "bernoulli_glm", algorithm = "semple", num_obs_range=range(1,2), subfolder = "/5k")
 
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "semple", num_obs_range=range(1,11), subfolder = "/K80")
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "two_moons", algorithm = "semple", num_obs_range=range(1,11), subfolder = "/full_cov")
-    
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "hyperboloid", algorithm = "semple", run_index_range=range(1,11), subfolder = "/10k")
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "hyperboloid", algorithm = "snpe", run_index_range=range(6,11), subfolder = "/4rounds")
-    
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "semple", num_obs_range=range(1,4), subfolder = "/80k")
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "snpe", num_obs_range=range(5,11), subfolder = "/4rounds")
-    # compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "slcp", algorithm = "snle", num_obs_range=range(5,11), subfolder = "/4rounds")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "two_moons", algorithm = "semple", num_obs_range=range(1,10+1), subfolder = "/full_cov")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "two_moons", algorithm = "snpe", num_obs_range=range(1,10+1), subfolder = "/10k_10rounds")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "two_moons", algorithm = "snle", num_obs_range=range(1,10+1), subfolder = "/10k_10rounds")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "two_moons", algorithm = "snpe", num_obs_range=range(1,10+1), subfolder = "/10k_4rounds")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "two_moons", algorithm = "snle", num_obs_range=range(1,10+1), subfolder = "/10k_4rounds_resample")
 
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "ornstein_uhlenbeck", algorithm = "semple", run_index_range=range(4,11), subfolder = "/10k_prior")
-    # compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2", "mmd"], task_name = "ornstein_uhlenbeck", algorithm = "snpe", run_index_range=range(6,11), subfolder = "/40k_total")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "hyperboloid", algorithm = "semple", run_index_range=range(1,10+1), subfolder = "/10k")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "hyperboloid", algorithm = "snpe", run_index_range=range(1,10+1), subfolder = "/40k_10rounds")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "hyperboloid", algorithm = "snle", run_index_range=range(1,10+1), subfolder = "/10rounds_resample")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "hyperboloid", algorithm = "snpe", run_index_range=range(1,10+1), subfolder = "/40k_10rounds")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "hyperboloid", algorithm = "snle", run_index_range=range(1,10+1), subfolder = "/10rounds_resample")
 
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "bernoulli_glm", algorithm = "semple", num_obs_range=range(1,10+1), subfolder = "/5k_2iter")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "bernoulli_glm", algorithm = "snle", num_obs_range=range(1,10+1), subfolder = "/10rounds_resample")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "bernoulli_glm", algorithm = "snpe", num_obs_range=range(1,10+1), subfolder = "/10rounds")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "bernoulli_glm", algorithm = "snle", num_obs_range=range(1,10+1), subfolder = "/5k")
+    compute_multiple_sbibm_metrics_multiple_obs(metric_name_list = ["c2st", "emdp2"], task_name = "bernoulli_glm", algorithm = "snpe", num_obs_range=range(1,10+1), subfolder = "/5k")
+
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "ornstein_uhlenbeck", algorithm = "semple", run_index_range=range(1,10+1), subfolder = "/10k_prior")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "ornstein_uhlenbeck", algorithm = "snpe", run_index_range=range(1,10+1), subfolder = "/10rounds")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "ornstein_uhlenbeck", algorithm = "snle", run_index_range=range(1,10+1), subfolder = "/10rounds_resample")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "ornstein_uhlenbeck", algorithm = "snpe", run_index_range=range(1,10+1), subfolder = "/40k_total")
+    compute_multiple_sbibm_metrics_multiple_runs(metric_name_list = ["c2st", "emdp2"], task_name = "ornstein_uhlenbeck", algorithm = "snle", run_index_range=range(1,10+1), subfolder = "/40k_total")
