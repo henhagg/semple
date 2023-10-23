@@ -1,3 +1,0 @@
-num_simulations,num_observation,algorithm,MMD
-5000,8,SEMPLE,0.1492234468460083
-10000,8,SEMPLE,0.020000219345092773

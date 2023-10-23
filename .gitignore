@@ -1,5 +1,5 @@
 figures/
+.DS_Store/
 .Rhistory
 sbi-logs/
-results/bernoulli_glm/jass
-results/gaussian_mixture
+results/
