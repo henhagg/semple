@@ -5,7 +5,7 @@ SeMPLE is a framework for simulation-based inference that learns surrogate model
 ## Setup
 SeMPLE is written in R. To run SeMPLE you need to install the xLLiM package that gives access to the GLLiM function.
 
-Run the following command in R to get the correct version of xLLiM: 
+Run the following command in R to get the correct version of xLLiM (requires the R package "devtools" to be installed): 
 ```commandline
 devtools::install_github("epertham/xLLiM", ref = "devel")
 ```
