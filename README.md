@@ -3,7 +3,7 @@
 SeMPLE is a framework for simulation-based inference that learns surrogate models for the likelihood function and the posterior distribution of model parameters, and outputs draws from the posterior. It provides a faster and lightweight solution compared to samplers using neural networks for density estimation, while retaining accuracy.
 
 ## Setup
-SeMPLE is written in R. To run SeMPLE you need to install the xLLiM package that gives access to the GLLiM function.
+SeMPLE is written in R. To run SeMPLE you need to install the xLLiM R package that gives access to the GLLiM function. Follow the instructions below, do NOT use the version provided on CRAN.
 
 Run the following command in R to get the correct version of xLLiM (requires the R package "devtools" to be installed): 
 ```commandline
