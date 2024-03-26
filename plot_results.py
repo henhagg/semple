@@ -3,8 +3,10 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 from matplotlib import pyplot as plt
+import matplotlib
+from pathlib import Path
 import json
-import mpl_scatter_density # adds projection='scatter_density'
+#import mpl_scatter_density # adds projection='scatter_density'
 from matplotlib.colors import LinearSegmentedColormap
 
 def save_fig(save_path):
@@ -48,6 +50,7 @@ def plot_multiple_algorithm_median_metric_vs_sims(input_dir_list, metric_name, o
     plt.figure(figsize=(8,6))
     sns.lineplot(data=metric_df, x="num_simulations", y=metric_name.upper(), err_style="bars", estimator=lambda x:np.median(x), errorbar=("pi", 100), style="algorithm", 
     hue="algorithm", markers=True, markersize=8, err_kws={"capsize":5})
+    print(metric_df.to_string())
     
     fontsize = 10 # 15
     plt.xlabel("Number of simulations", fontsize=fontsize+5)
@@ -163,6 +166,44 @@ def plot_mc_semple(input_dir, param_index_list):
         sns.lineplot(data=param_df, x=param_df.index, y="value", hue="iteration")
         plt.show()
 
+def plot_hist(file_path, parameter_name_list, transpose=False):
+    posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+    if(transpose):
+        posterior_samples = posterior_samples.transpose()
+    posterior_samples.columns = parameter_name_list
+    sns.histplot(posterior_samples.iloc[:,0])
+    plt.show()
+
+def plot_kde(file_path, parameter_index, true_value=None, transpose=False):
+    posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+    if(transpose):
+        posterior_samples = posterior_samples.transpose()
+    sns.kdeplot(posterior_samples.iloc[:,parameter_index])
+    
+    if(true_value):
+        plt.axvline(true_value, 0, 1)
+    
+    plt.show()
+
+def plot_kde_single_param_all_iter(input_dir, parameter_index, true_value=None):
+    with open(f"{input_dir}/settings.json", "r") as openfile:
+        settings_dict = json.load(openfile)
+    num_iters = settings_dict["num_iters"]
+
+    for iter in range(0,num_iters+1):
+        file_path = f"{input_dir}/post_sample_iter{iter}.csv"
+        posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+        if(iter == 0):
+            posterior_samples = posterior_samples.transpose()
+        posterior_samples_param = posterior_samples.iloc[:,parameter_index]
+        sns.kdeplot(posterior_samples_param, label=f"iter {iter}")
+    
+    if(true_value):
+        plt.axvline(true_value, 0, 1)
+
+    plt.legend()
+    plt.show()
+
 def plot_pairs(file_path, save_path=None):
     posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
     sns_plot = sns.pairplot(posterior_samples)
@@ -198,11 +239,133 @@ def plot_multiple_pairs(file_path_list, legend_list, parameter_name_list, fig_he
     if fig_show:
         plt.show()
 
-def plot_kde(file_path, parameter_name_list, save_path=None):
+def plot_kde_all_param(file_path, parameter_name_list, true_values=[], save_path=None):
     posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
     posterior_samples.columns = parameter_name_list
-    sns.kdeplot(posterior_samples)
-    plt.show()
+    colors = ["blue", "green", "orange"]
+    sns.kdeplot(posterior_samples, palette=colors)
+
+    for i, val in enumerate(true_values):
+        plt.axvline(val, 0, 1, color=colors[i])
+        
+    if(save_path is not None):
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
+def plot_kde_single_param_multi_run(input_dir, param_index, param_name, algorithm_round, run_indices, true_value=None, save_path=None):
+    plt.style.use(Path.cwd() / Path('make_figure_stylesheet.txt'))
+
+    for run_index in run_indices:
+        file_path = f"{input_dir}/run{run_index}/post_sample_iter{algorithm_round}.csv"
+        posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+        posterior_samples_param = posterior_samples.iloc[:,param_index]
+        sns.kdeplot(posterior_samples_param)
+    
+    plt.xlabel(param_name)
+        
+    if(true_value is not None):
+        plt.axvline(true_value, 0, 1, color="black")
+
+    if(save_path is not None):
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
+def plot_kde_multi_param_multi_run(input_dir, param_name_list, algorithm_round, run_indices, true_values, save_path=None):
+    plt.style.use(Path.cwd() / Path('make_figure_stylesheet.txt'))
+
+    fig, axes = plt.subplots(2, 2, figsize=(7,7))
+    axes_index_list = [axes[0,0], axes[0,1], axes[1,0], axes[1,1]]
+    legend_list = [f'SeMPLE repeat {i}' for i in run_indices]
+
+    num_param = len(param_name_list)
+    for param_index in range(num_param):
+        for run_index in run_indices:
+            file_path = f"{input_dir}/run{run_index}/post_sample_iter{algorithm_round}.csv"
+            posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+            posterior_samples_param = posterior_samples.iloc[:,param_index]
+            sns.kdeplot(ax=axes_index_list[param_index], data=posterior_samples_param)
+        
+        axes_index_list[param_index].set_xlabel(param_name_list[param_index])
+        if(param_index in [0,1,2]):
+            axes_index_list[param_index].set_xlim([-6,2])
+        else:
+            axes_index_list[param_index].set_xlim([np.log(0.5),np.log(50)])
+        axes_index_list[param_index].set_ylabel("")
+        axes_index_list[param_index].axvline(true_values[param_index], 0, 1, color="black")
+        axes_index_list[param_index].legend(legend_list, fontsize=7)
+
+    plt.tight_layout()
+    if(save_path is not None):
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
+def plot_kde_multi_param_multi_run_smcabc(input_dir, param_name_list, algorithm_round, run_indices, true_values, save_path=None):
+    plt.style.use(Path.cwd() / Path('make_figure_stylesheet.txt'))
+
+    fig, axes = plt.subplots(2, 2, figsize=(7,7))
+    axes_index_list = [axes[0,0], axes[0,1], axes[1,0], axes[1,1]]
+    legend_list = ['SMC-ABC blockedopt 3.3MK'] + ['SMC-ABC blockedopt 30K'] + ['SMC-ABC standard 30K'] + [f'SeMPLE 30K' for i in run_indices]
+
+    num_param = len(param_name_list)
+    for param_index in range(num_param):
+        blockedopt_iter39 = pd.read_csv("models/lotka_volterra/blockedopt_ABCdraws_stage39_attempt1_copula0_marg5_nu5_numarg5.0_part1000.csv", index_col=False, header=None).iloc[param_index, :]
+        sns.kdeplot(ax=axes_index_list[param_index], data=blockedopt_iter39)
+
+        blockedopt_iter10 = pd.read_csv("models/lotka_volterra/blockedopt_ABCdraws_stage10_attempt1_copula0_marg5_nu5_numarg5.0_part1000.csv", index_col=False, header=None).iloc[param_index, :]
+        sns.kdeplot(ax=axes_index_list[param_index], data=blockedopt_iter10)
+
+        standard_iter6 = pd.read_csv("models/lotka_volterra/standard_ABCdraws_stage6_attempt1_copula0_marg5_nu5_numarg5.0_part1000.csv", index_col=False, header=None).iloc[param_index, :]
+        sns.kdeplot(ax=axes_index_list[param_index], data=standard_iter6)
+
+        for run_index in run_indices:
+            file_path = f"{input_dir}/run{run_index}/post_sample_iter{algorithm_round}.csv"
+            posterior_samples = pd.read_csv(file_path, index_col=False, header=None)
+            posterior_samples_param = posterior_samples.iloc[:,param_index]
+            sns.kdeplot(ax=axes_index_list[param_index], data=posterior_samples_param)
+        
+        axes_index_list[param_index].set_xlabel(param_name_list[param_index])
+        if(param_index in [0,1,2]):
+            axes_index_list[param_index].set_xlim([-6,2])
+        else:
+            axes_index_list[param_index].set_xlim([np.log(0.5),np.log(50)])
+        axes_index_list[param_index].set_ylabel("")
+        axes_index_list[param_index].axvline(true_values[param_index], 0, 1, color="black")
+        axes_index_list[param_index].legend(legend_list, fontsize=7)
+
+    plt.tight_layout()
+    if(save_path is not None):
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
+def plot_kde_multiple_iterations(input_dir, parameter_name_list, true_values=[], save_fig=False):
+    with open(f"{input_dir}/settings.json", "r") as openfile:
+        settings_dict = json.load(openfile)
+    num_iters = settings_dict["num_iters"]
+
+    colors = ["blue", "green", "orange", "black"]
+    # num_param = len(parameter_name_list)
+    # cmap = matplotlib.colormaps['Dark2']
+    # norm = matplotlib.colors.Normalize(vmin=0, vmax=num_param-1)
+    # colors = [cmap(norm(i)) for i in range(0,num_param)]
+
+    for r in range(0,num_iters+1):
+        posterior_samples = (pd.read_csv(f"{input_dir}/post_sample_iter{r}.csv", index_col=False, header=None))
+        posterior_samples.columns = parameter_name_list
+    
+        sns.kdeplot(posterior_samples, palette=colors)
+
+        for i, val in enumerate(true_values):
+            plt.axvline(val, 0, 1, color=colors[i])
+        
+        if(save_fig):
+            plt.savefig(f"{input_dir}/kde_iter{r}.png")
+            plt.clf()
+        else:
+            plt.show()
 
 def plot_multiple_algorithm_kde(file_path_list, legend_list, parameter_name_list, save_path=None, fig_show=True):
     df = pd.DataFrame()
@@ -493,6 +656,17 @@ def plot_multiple_algorithm_median_time_vs_simulations(input_dir_list, legend_li
 
 if __name__ == '__main__':
     print("plot_results")
+    #################################### LOTKA-VOLTERRA #####################################################    
+    plot_kde_multi_param_multi_run(input_dir="results/lotka_volterra/semple/10k_10k_3iter/obs1",
+                                    param_name_list=[r"$\log(\theta_1)$", r"$\log(\theta_2)$", r"$\log(\theta_3)$", r"$\log(\sigma)$"], 
+                                    algorithm_round=3, true_values=[np.log(1), np.log(0.005), np.log(0.6), np.log(30)], run_indices=range(1,5+1),
+                                    save_path="results/lotka_volterra/semple/10k_10k_3iter/kde_obs1_5repeats_legend.pdf")
+
+    plot_kde_multi_param_multi_run_smcabc(input_dir="results/lotka_volterra/semple/10k_10k_3iter/obs1",
+                                    param_name_list=[r"$\log(\theta_1)$", r"$\log(\theta_2)$", r"$\log(\theta_3)$", r"$\log(\sigma)$"], 
+                                    algorithm_round=3, true_values=[np.log(1), np.log(0.005), np.log(0.6), np.log(30)], run_indices=range(1,1+1),
+                                    save_path="results/lotka_volterra/semple/10k_10k_3iter/kde_obs1_smc.pdf")
+    
 
     #################################### TWO MOONS ##########################################################
     # plot_multiple_median_semple_acceptance_rate(input_dir_list=["results/two_moons/semple/full_cov", "results/two_moons/semple/MHpost"], 
