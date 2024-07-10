@@ -1,11 +1,8 @@
 library(xLLiM)
 library(mixtools)
-library(tictoc)
 library(rjson)
-library(SFSI)
 library(mvtnorm)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
 source('gaumixfit_sbibm.R')
 source('models/bernoulli_glm/bernoulli_glm_model.R')
 
@@ -31,7 +28,6 @@ param_list = list(num_simulation_per_iteration=num_simulation_per_iteration, num
 subfolder = "5k_2iter/" # e.g. test/
 #:::::::::::::::::::::::::RUN INFERENCE:::::::::::::::::::::::::::::::
 
-tic()
 observation_indices = seq(1,10)
 for (num_observation in observation_indices){
   set.seed(num_observation)
@@ -51,4 +47,3 @@ for (num_observation in observation_indices){
                         verbose=verbose,MH_target=MH_target,model_name=model_name,num_samples_saved=num_samples_saved,
                         num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)
 }
-toc()
