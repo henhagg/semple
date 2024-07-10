@@ -151,16 +151,12 @@ plot_bic_from_file = function(model_name,
 
 
 #::::::::::::::::::::::::::::::: TWO MOONS :::::::::::::::::::::::::::::::::::::
-cov_structure = ""
-model_name = "two_moons"
-num_priorpred_samples = 2500
-
 K_values = seq(10, 70, 10)
 bic_values = compute_bic(
-  model_name = model_name,
-  num_priorpred_samples = num_priorpred_samples,
+  model_name = "two_moons",
+  num_priorpred_samples = 2500,
   K_values = K_values,
-  cov_structure = cov_structure,
+  cov_structure = "",
   gllim_verb = 0,
   save_result_to_csv = TRUE,
   save_plot = TRUE
@@ -172,16 +168,12 @@ plot(K_values,
      ylab = "BIC")
 
 #::::::::::::::::::::::::::: MULTIPLE HYPERBOLOID ::::::::::::::::::::::::::::::
-cov_structure = "i"
-model_name = "hyperboloid"
-num_priorpred_samples = 10000
-
 K_values = seq(10, 50, 5)
 bic_values = compute_bic(
-  model_name = model_name,
-  num_priorpred_samples = num_priorpred_samples,
+  model_name = "hyperboloid",
+  num_priorpred_samples = 10000,
   K_values = K_values,
-  cov_structure = cov_structure,
+  cov_structure = "i",
   gllim_verb = 0,
   save_result_to_csv = TRUE,
   save_plot = TRUE
