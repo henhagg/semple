@@ -1,14 +1,14 @@
-#:::: Generative model ::::::::::::::::::::::::::::::::
+ #:::: Generative model ::::::::::::::::::::::::::::::::
+design_matrix = as.matrix(read.csv(file="models/bernoulli_glm/design_matrix.csv", header = FALSE))
+stimulus_I = as.vector(as.matrix(read.csv(file="models/bernoulli_glm/stimulus_I.csv", header = FALSE)))
+
 model = function(param, model_param=NULL){
-  design_matrix = readBinary(file="models/bernoulli_glm/design_matrix.dat", verbose=FALSE)
-  stimulus_I = readBinary(file="models/bernoulli_glm/stimulus_I.dat", verbose=FALSE)
-  
   psi = design_matrix %*% param
   z = 1 / (1 + exp(-psi))
   y = as.numeric(runif(dim(design_matrix)[1]) < z)
   
   num_spikes = sum(y)
-  sta = convolve(c(y,rep(0,8)), as.vector(stimulus_I),type="filter")
+  sta = convolve(c(y,rep(0,8)), stimulus_I,type="filter")
   
   return(c(num_spikes, sta))
 }
