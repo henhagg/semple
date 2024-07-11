@@ -1,7 +1,6 @@
 library(xLLiM)
 library(mixtools)
 library(mvtnorm)
-library(mcmc)
 
 source('src/semple.R')
 source('models/hyperboloid/hyperboloid_model.R')
