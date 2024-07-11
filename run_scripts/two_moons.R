@@ -43,7 +43,7 @@ for (num_observation in observation_indices){
   
   start_time = Sys.time()
   
-  inference = gaumixfit(observedData=observedData,burnin=burnin,K_start=K_start,cov_structure=cov_structure,maxiter=gllim_maxiter,prior_pdf=prior_pdf,sample_prior=sample_prior,jacobian=jacobian,model=model,
+  inference = semple(observedData=observedData,burnin=burnin,K_start=K_start,cov_structure=cov_structure,maxiter=gllim_maxiter,prior_pdf=prior_pdf,sample_prior=sample_prior,jacobian=jacobian,model=model,
                         num_iters=num_iters,factor_cvMH=factor_cvMH,mixprob_thresh=mixprob_thresh,dim_data=dim_data,
                         verbose=verbose,MH_target=MH_target,model_name=model_name,num_samples_saved=num_samples_saved,
                         num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)

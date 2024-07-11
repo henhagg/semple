@@ -1,4 +1,4 @@
-gaumixfit = function(observedData,burnin,K_start,cov_structure,maxiter=100,prior_pdf,sample_prior,jacobian,model,num_iters,factor_cvMH=1.2,
+semple = function(observedData,burnin,K_start,cov_structure,maxiter=100,prior_pdf,sample_prior,jacobian,model,num_iters,factor_cvMH=1.2,
                      mixprob_thresh=0,dim_data,verbose=1,MH_target="likelihood",model_name,model_param=NULL,num_samples_saved,
                      num_simulation_per_iteration,start_time,output_dir)
 {

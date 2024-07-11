@@ -61,7 +61,7 @@ for (num_observation in observation_indices){
   
   start_time = Sys.time()
   
-  inference = gaumixfit(observedData=as.vector(unlist(observedData)),
+  inference = semple(observedData=as.vector(unlist(observedData)),
                         burnin=burnin,
                         K_start=K_start,
                         cov_structure=cov_structure,

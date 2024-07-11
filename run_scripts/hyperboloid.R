@@ -43,7 +43,7 @@ for (run_index in run_indices){
   settings_json = rjson::toJSON(param_list)
   write(settings_json, paste(output_dir,"/settings.json", sep=''))
   
-  inference = gaumixfit(observedData=as.vector(unlist(observedData)),burnin=burnin,K_start=K_start,cov_structure=cov_structure, maxiter=gllim_maxiter,
+  inference = semple(observedData=as.vector(unlist(observedData)),burnin=burnin,K_start=K_start,cov_structure=cov_structure, maxiter=gllim_maxiter,
                         prior_pdf=prior_pdf,sample_prior=sample_prior,jacobian=jacobian,model=model,num_iters=num_iters,
                         factor_cvMH=factor_cvMH,mixprob_thresh=mixprob_thresh,dim_data=dim_data,verbose=verbose,MH_target=MH_target,
                         model_name=model_name,model_param=model_param,num_samples_saved=num_samples_saved,
