@@ -1,6 +1,5 @@
 library(xLLiM)
 library(mixtools)
-library(tictoc)
 library(rjson)
 library(smfsb) # for the model simulator
 
@@ -40,7 +39,6 @@ observed_summaries = (ssi(lv_data)-means_trim)/sds_trim
 
 subfolder = "test/" # e.g test/
 
-tic()
 for (run_index in run_indices){
   set.seed(run_index)
   
@@ -58,5 +56,3 @@ for (run_index in run_indices){
                         model_name=model_name,model_param=model_param,num_samples_saved=num_samples_saved,
                         num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)
 }
-toc()
-

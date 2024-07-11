@@ -1,6 +1,5 @@
 library(xLLiM)
 library(mixtools)
-library(tictoc)
 library(mvtnorm)
 library(mcmc)
 
@@ -31,7 +30,6 @@ observedData = read.csv(file="models/hyperboloid/num_observation_1/observation.c
 run_indices = 1:10
 subfolder = "10k/" # e.g test/
 
-tic()
 for (run_index in run_indices){
   set.seed(run_index)
   
@@ -49,5 +47,3 @@ for (run_index in run_indices){
                         model_name=model_name,model_param=model_param,num_samples_saved=num_samples_saved,
                         num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)
 }
-toc()
-

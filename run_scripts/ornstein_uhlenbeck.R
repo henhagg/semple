@@ -1,6 +1,5 @@
 library(xLLiM)
 library(mixtools)
-library(tictoc)
 library(mvtnorm)
 
 source('src/semple.R')
@@ -31,7 +30,6 @@ subfolder = "10k_prior/" # e.g. test/
 
 run_indices = 1:10
 
-tic()
 for (run_index in run_indices){
   set.seed(run_index)
   
@@ -47,5 +45,3 @@ for (run_index in run_indices){
                         jacobian=jacobian,model=model,num_iters=num_iters,factor_cvMH=factor_cvMH,mixprob_thresh=mixprob_thresh,dim_data=dim_data,verbose=verbose,MH_target=MH_target,
                         model_name=model_name,model_param=model_param,num_samples_saved=num_samples_saved,num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)
 }
-toc()
-

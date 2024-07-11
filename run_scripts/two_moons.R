@@ -1,6 +1,5 @@
 library(xLLiM)
 library(mixtools)
-library(tictoc)
 library(rjson)
 
 source('src/semple.R')
@@ -28,7 +27,6 @@ param_list = list(num_simulation_per_iteration=num_simulation_per_iteration, num
 subfolder = "full_cov/" # e.g. test/
 #:::::::::::::::::::::::::RUN INFERENCE:::::::::::::::::::::::::::::::
 
-tic()
 observation_indices = seq(1,10)
 for (num_observation in observation_indices){
   set.seed(num_observation)
@@ -48,4 +46,3 @@ for (num_observation in observation_indices){
                         verbose=verbose,MH_target=MH_target,model_name=model_name,num_samples_saved=num_samples_saved,
                         num_simulation_per_iteration=num_simulation_per_iteration,start_time=start_time,output_dir=output_dir)
 }
-toc()
