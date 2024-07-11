@@ -1,5 +1,11 @@
-#:::: Generative model ::::::::::::::::::::::::::::::::
+#::::::::::::::::::::::::::::::: MODEL PARAMETERS ::::::::::::::::::::::::::::::
+T=10
+n=50
+model_param = list(T=T, n=n)
+dim_data = n+1
+num_param = 3
 
+#::::::::::::::::::::::::::::: GENERATIVE MODEL ::::::::::::::::::::::::::::::::
 model = function(param, model_param=NULL){
   # list2env(model_param, environment()) # import model parameter list (T, n) to function environment
   T = model_param$T
@@ -19,7 +25,7 @@ model = function(param, model_param=NULL){
   return(x)
 }
 
-#::::::::::::: PRIORS :::::::::::::::::::::::::::::::::::::::::
+#:::::::::::::::::::::::::::::: PRIORS :::::::::::::::::::::::::::::::::::::::::
 prior_pdf = function(theta=theta){
   alpha = theta[1]
   beta = theta[2]
@@ -37,13 +43,13 @@ sample_prior = function(){
   return(c(alpha, beta, sigma))
 }
 
-#::::::::: TRANSFORMATION JACOBIAN ::::::::::::::::::::::
-
+#:::::::::::::::::::::::: TRANSFORMATION JACOBIAN ::::::::::::::::::::::::::::::
 jacobian = function(theta_old,theta){
   jacobian = 1 # no transformation jacobian needed here
   return(jacobian)
 }
-# ::::::::::::::::::: METROPOLIS HASTINGS HELP FUNCTIONS :::::::::::::::::::::
+
+# ::::::::::::::::::: METROPOLIS HASTINGS HELP FUNCTIONS :::::::::::::::::::::::
 loglik_func = function(x, alpha, beta, sigma, delta){
   loglik = 0
   for (i in 2:length(x)){
@@ -66,41 +72,3 @@ log_post_unnormalized = function(x, param, T){
     return(loglik_func(x, alpha, beta, sigma, delta))
   }
 }
-
-#::::::::::::::::::::::::: MODEL PARAMETERS :::::::::::::::::::::::::
-
-T=10
-n=50
-model_param = list(T=T, n=n)
-dim_data = n+1
-num_param = 3
-# true_param = c(3,1,0.5)
-
-# # Generate new observation
-# set.seed(1)
-# observation = model(true_param, model_param)
-# plot(observation, type="b")
-# write.table(observation, file = "results/ornstein_uhlenbeck/observation.dat", sep = ",", row.names = F, col.names = F)
-
-
-
-#:::::::::::::::::::::::::::::: RUN METROPOLIS HASTINGS::::::::::::::::::::::::::::::::::
-# library(mcmc)
-# observedData = read.table(file="results/ornstein_uhlenbeck/observation.dat")
-# set.seed(1)
-# metrop_output = metrop(log_post_unnormalized, initial=c(3,1,0.5), blen = 1, nbatch = 10000, nspac=10, x=unlist(observedData), T=T, scale=0.3)
-# MH_values = metrop_output$batch
-# plot(MH_values[,1], type="l", ylab="alpha")
-# plot(MH_values[,2], type="l", ylab="beta")
-# plot(MH_values[,3], type="l", ylab="sigma")
-# ggpairs(data.frame(MH_values), diag=list(continuous="barDiag"), upper=list(continuous="points"))
-# 
-# write.table(MH_values, file = paste("results/ornstein_uhlenbeck/MH_sample_10k.dat", sep = ''), sep = "\t", row.names = F, col.names = F)
-# write.table(MH_values, file = paste("results/ornstein_uhlenbeck/MH_sample_10k.csv", sep = ''), sep=",", row.names = F, col.names = F)
-
-
-
-
-
-
-
