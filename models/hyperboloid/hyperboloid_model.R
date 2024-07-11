@@ -20,7 +20,7 @@ simuITDT=function(x12,m1,m2,sigmaT,dofT,ny){
   Mutest = rep(abs(d1-d2),ny)
   Sigmatest=diag(sigmaT,ny)
   #ysimu= Mutest+ rmvt(1, sigma=Sigmatest, df=1)
-  ysimu= SimDesign::rmvt(1, delta=Mutest, sigma=Sigmatest, df=dofT)
+  ysimu= mvtnorm::rmvt(1, delta=Mutest, sigma=Sigmatest, df=dofT)
   ysimu
 }
 
