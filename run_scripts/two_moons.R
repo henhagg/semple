@@ -39,7 +39,7 @@ for (num_observation in observation_indices){
   settings_json = rjson::toJSON(param_list)
   write(settings_json, paste(output_dir,"/settings.json", sep=''))
   
-  observedData = unlist(read.csv(file=paste("../sbibm/sbibm/tasks/",model_name,"/files/num_observation_", num_observation, "/observation.csv", sep='')))
+  observedData = unlist(read.csv(file=paste("models/", model_name, "/num_observation_", num_observation, "/observation.csv", sep='')))
   
   start_time = Sys.time()
   
