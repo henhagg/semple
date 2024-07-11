@@ -1,12 +1,22 @@
-library(xLLiM)
-library(mixtools)
-library(tictoc)
-library(ggplot2)
 library(mvtnorm)
-library(mcmc)
 
-#:::::::::::::::::::: Generative model ::::::::::::::::::::::::::::::::
+#:::::::::::::: Model parameters :::::::::::::::::::::::::::
+# Microphones configuration and Student parameters
+micr1=c(-0.5,0)
+micr2=c(0.5,0)
+micr1p=c(0,-0.5)
+micr2p=c(0,0.5)
+# Student Noise 
+sigmaT=0.01
+dofT=3
+ny=10
 
+model_param = list(micr1=micr1, micr2=micr2, micr1p=micr1p, micr2p=micr2p, sigmaT=sigmaT, dofT=dofT, ny=ny)
+true_location = c(1.5,1)
+dim_data = ny
+num_param = 2
+
+#::::::::::::::::::::::::: Generative model ::::::::::::::::::::::::::::::::::::
 # Functions taken from https://github.com/Trung-TinNGUYEN/GLLiM-ABC
 simuITDT=function(x12,m1,m2,sigmaT,dofT,ny){
   micr11=m1[1]
@@ -38,8 +48,25 @@ model = function(param, model_param=NULL){
   return(simuITDTmix(param, m1=micr1,m2=micr2,m1p=micr1p,m2p=micr2p,sigmaT=sigmaT,dofT=dofT,ny=ny))
 }
 
-#::::::::::::::::::::::: MH help functions :::::::::::::::::::::::::
+#:::::::::::::::::::::::::::::: PRIORS :::::::::::::::::::::::::::::::::::::::::
+prior_pdf = function(theta=theta){
+  jointprior = dunif(theta[1],-2,2)*dunif(theta[2],-2,2)
+  return(jointprior)
+}
 
+sample_prior = function(){
+  prior_sample = runif(n=2, min=-2, max=2)
+  return(prior_sample)
+}
+
+#:::::::::::::::::::::::::: TRANSFORMATION JACOBIAN ::::::::::::::::::::::::::::
+jacobian = function(theta_old,theta){
+  jacobian = 1 # no transformation jacobian needed here
+  return(jacobian)
+}
+
+#::::::::::::::: METROPOLIS-HASTINGS HELP FUNCTIONS ::::::::::::::::::::::::::::
+# Functions taken from https://github.com/Trung-TinNGUYEN/GLLiM-ABC
 UnpostITDT=function(yobs, x12, m1, m2, sigmaT, dofT){
   x1=x12[1]
   x2=x12[2]
@@ -84,91 +111,3 @@ PostPdfITDMix=function(N_grid, y){
   # ITD_df
   list("postdf"= full_df)
 }
-
-
-
-#::::::::::::: PRIORS :::::::::::::::::::::::::::::::::::::::::
-prior_pdf = function(theta=theta){
-  jointprior = dunif(theta[1],-2,2)*dunif(theta[2],-2,2)
-  return(jointprior)
-}
-
-sample_prior = function(){
-  prior_sample = runif(n=2, min=-2, max=2)
-  return(prior_sample)
-}
-
-#::::::::: TRANSFORMATION JACOBIAN ::::::::::::::::::::::
-
-jacobian = function(theta_old,theta){
-  jacobian = 1 # no transformation jacobian needed here
-  return(jacobian)
-}
-
-
-
-#:::::::::::::: Model parameters :::::::::::::::::::::::::::
-
-# Microphones configuration and Student parameters
-micr1=c(-0.5,0)
-micr2=c(0.5,0)
-micr1p=c(0,-0.5)
-micr2p=c(0,0.5)
-# Student Noise 
-sigmaT=0.01
-dofT=3
-ny=10
-
-model_param = list(micr1=micr1, micr2=micr2, micr1p=micr1p, micr2p=micr2p, sigmaT=sigmaT, dofT=dofT, ny=ny)
-
-true_location = c(1.5,1)
-
-dim_data = ny
-num_param = 2
-
-
-#:::::::::::: GENERATE OBSERVATION:::::::::::::::::::::::::
-set.seed(1)
-ytargetITD=simuITDTmix(true_location, micr1,micr2, micr1p,micr2p,sigmaT,dofT,ny=dim_data)
-
-#:::::::::::: PLOT TRUE POSTERIOR CONTOURS ::::::::::::::::
-dfconfig=data.frame(matrix(c(-0.5,0,0.5,0, 0,-0.5,0,0.5,1.5,1), 5,2, byrow=T))
-N_grid=500
-ITD_df=PostPdfITDMix(N_grid,unlist(ytargetITD))$postdf
-v = ggplot(ITD_df) +  xlab("x") + ylab("y")+ theme(aspect.ratio = 1)+ xlim(-2, 2) + ylim(-2, 2) ;
-v + geom_contour( aes(x1, x2, z = z), color="blue", bins=7) + geom_abline(slope=0 , intercept=0, linetype="dashed", linewidth=.3) + geom_point(data=dfconfig, mapping=aes(x=X1, y=X2), size=2.5, color="black")
-
-#::::::::::: WRITE GENERATED OBSERVATION TO FILE :::::::::
-# write.table(ytargetITD, file = "results/hyperboloid/observation.csv", sep = ",", row.names = F, col.names = F)
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-# Read observation
-# ytargetITD = read.csv(file="results/hyperboloid/observation.csv", header=FALSE)
-
-#:::::::::::: RUN METROPOLIS HASTINGS:::::::::::::::::::::
-# set.seed(1)
-# numMH = 10000
-# outITDT = metrop(logunpostITDTmix, c(0,0), blen = 1, nbatch = numMH, nspac=10, yobs=ytargetITD, m1=micr1, m2=micr2,m1p=micr1p, m2p=micr2p,
-#                   sigmaT=sigmaT, dofT=dofT, scale=0.5)
-# MHvalITD=outITDT$batch
-# # write.table(MHvalITD, file = paste("results/hyperboloid/MH_sample_test.dat", sep = ''), sep = "\t", row.names = F, col.names = F)
-# write.table(MHvalITD, file = paste("results/hyperboloid/MH_sample_test.csv", sep = ''), sep=",", row.names = F, col.names = F)
-# 
-# MHvalITD = read.table(file="results/hyperboloid/MH_sample_test.dat")
-# 
-# dfMHITD=data.frame(MHvalITD)
-# colnames(dfMHITD) = c('X1','X2')
-# dfconfig=data.frame(matrix(c(-0.5,0,0.5,0, 0,-0.5,0,0.5,1.5,1), 5,2, byrow=T))
-# m = ggplot(dfMHITD, aes(x = X1, y = X2)) +
-#   theme(aspect.ratio=1) +
-#   xlim(-2, 2) +
-#   ylim(-2, 2)
-# m= m +  geom_point(data=dfMHITD, size=1, color=rgb(.1,0,.9,alpha = 0.5), shape=1) + xlab("x") + ylab("y")
-# m= m + geom_point(data=dfconfig, size=2.5, color="black") + geom_abline(slope=0 , intercept=0, linetype="dashed", size=.3)
-# m
-# 
-# plot(dfMHITD$X1, type='l')
-# plot(dfMHITD$X2, type='l')
-# print(dim(unique(dfMHITD)))
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::
-
