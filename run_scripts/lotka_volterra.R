@@ -6,8 +6,7 @@ library(smfsb) # for the model simulator
 
 model_name = "lotka_volterra"
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source(paste('models/', model_name, '/', model_name, '_model.R', sep=""))
 
 # :::::::::: Parameters ::::::::::::::::::::

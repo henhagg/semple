@@ -3,7 +3,7 @@ library(mixtools)
 library(rjson)
 library(mvtnorm)
 
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source('models/bernoulli_glm/bernoulli_glm_model.R')
 
 # :::::::::: Parameters ::::::::::::::::::::

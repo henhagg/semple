@@ -4,9 +4,7 @@ library(tictoc)
 library(mvtnorm)
 library(mcmc)
 
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source('models/hyperboloid/hyperboloid_model.R')
 
 #:::::::::::::::::: semple parameters ::::::::::::::::::::::::::

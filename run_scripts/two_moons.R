@@ -3,8 +3,7 @@ library(mixtools)
 library(tictoc)
 library(rjson)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source('models/two_moons/two_moons_model.R')
 
 # :::::::::: Parameters ::::::::::::::::::::

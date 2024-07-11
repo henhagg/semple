@@ -3,7 +3,7 @@ library(mixtools)
 library(mvtnorm)
 library(rjson)
 
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source('models/mrna/mrna_model.R')
 
 #:::::::::::::::::: semple parameters ::::::::::::::::::::::::::

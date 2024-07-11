@@ -3,8 +3,7 @@ library(mixtools)
 library(tictoc)
 library(mvtnorm)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to the location of this script
-source('gaumixfit_sbibm.R')
+source('src/semple.R')
 source('models/ornstein_uhlenbeck/ornstein_uhlenbeck_model.R')
 
 # :::::::::: semple PARAMETERS :::::::::::::::::::::::::::::::::::::::
